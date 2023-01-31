@@ -7,9 +7,13 @@ class TimeInZoneView extends WatchUi.DataField {
 
     hidden var mValue as Numeric;
 
-    function initialize() {
+    function initialize(value) {
         DataField.initialize();
-        mValue = 0.0f;
+        self.mValue = value;
+    }
+
+    function setValue(value) {
+        self.mValue = value;
     }
 
     // Set your layout here. Anytime the size of obscurity of
@@ -50,14 +54,6 @@ class TimeInZoneView extends WatchUi.DataField {
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Void {
-        // See Activity.Info in the documentation for available information.
-        if(info has :currentHeartRate){
-            if(info.currentHeartRate != null){
-                mValue = info.currentHeartRate as Number;
-            } else {
-                mValue = 0.0f;
-            }
-        }
     }
 
     // Display the value you computed here. This will be called

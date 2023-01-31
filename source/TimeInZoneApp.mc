@@ -3,6 +3,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class TimeInZoneApp extends Application.AppBase {
+    var view;
     var foo;
 
     function initialize() {
@@ -20,12 +21,13 @@ class TimeInZoneApp extends Application.AppBase {
 
     function onSettingsChanged() as Void {
         foo = AppBase.getProperty("myNumber");
-        WatchUi.requestUpdate();
+        view.setValue(foo);
     }
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new TimeInZoneView() ] as Array<Views or InputDelegates>;
+        view = new TimeInZoneView(foo);
+        return [ view ] as Array<Views or InputDelegates>;
     }
 
 }
