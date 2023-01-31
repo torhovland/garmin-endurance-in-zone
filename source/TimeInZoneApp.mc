@@ -25,7 +25,7 @@ class TimeInZoneApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        return [ new TimeInZoneView(foo) ] as Array<Views or InputDelegates>;
+        return [ new TimeInZoneView() ] as Array<Views or InputDelegates>;
     }
 
 }

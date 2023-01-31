@@ -11,4 +11,7 @@
     <string id="HelloWorld">Hello world</string>
     <string id="Ackbar">Ackbar</string>
     <string id="Garmin">Garmin</string>
+    <string id="AppName">TimeInZone</string>
+
+    <string id="label">My Value</string>
 </strings>
