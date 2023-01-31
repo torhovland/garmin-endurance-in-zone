@@ -1,3 +1,14 @@
 <strings>
     <string id="AppName">Time in Zone</string>
+    <string id="AppVersionTitle">App version</string>
+    <string id="MyStringTitle">My string</string>
+    <string id="MyStringPrompt">My string prompt</string>
+    <string id="MyNumberTitle">My number</string>
+    <string id="MyNumberPrompt">My number prompt</string>
+    <string id="MyNumberError">My number error</string>
+    <string id="ScreenSleepTitle">Screen sleep</string>
+    <string id="UsernameTitle">Username</string>
+    <string id="HelloWorld">Hello world</string>
+    <string id="Ackbar">Ackbar</string>
+    <string id="Garmin">Garmin</string>
 </strings>
