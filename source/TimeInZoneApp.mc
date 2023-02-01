@@ -4,11 +4,11 @@ import Toybox.WatchUi;
 
 class TimeInZoneApp extends Application.AppBase {
     var view;
-    var foo;
+    var settings;
 
     function initialize() {
         AppBase.initialize();
-        foo = AppBase.getProperty("myNumber");
+        settings = readSettings();
     }
 
     // onStart() is called on application start up
@@ -20,13 +20,21 @@ class TimeInZoneApp extends Application.AppBase {
     }
 
     function onSettingsChanged() as Void {
-        foo = AppBase.getProperty("myNumber");
-        view.setValue(foo);
+        settings = readSettings();
+        view.setSettings(settings);
+    }
+
+    function readSettings() as Settings {
+        var type = AppBase.getProperty("type");
+        var duration = AppBase.getProperty("duration");
+        var power = AppBase.getProperty("power");
+        var heartRate = AppBase.getProperty("heartRate");
+        return new Settings(type, duration, power, heartRate);
     }
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        view = new TimeInZoneView(foo);
+        view = new TimeInZoneView(settings);
         return [ view ] as Array<Views or InputDelegates>;
     }
 

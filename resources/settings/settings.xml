@@ -4,24 +4,23 @@
         <settingConfig type="alphaNumeric" readonly="true" />
     </setting>
 
-    <setting propertyKey="@Properties.myString" title="@Strings.MyStringTitle" prompt="@Strings.MyStringPrompt">
+    <setting propertyKey="@Properties.type" title="@Strings.MyStringTitle" prompt="@Strings.MyStringPrompt">
         <settingConfig type="list">
-            <listEntry value="0">@Strings.HelloWorld</listEntry>
-            <listEntry value="1">@Strings.Ackbar</listEntry>
-            <listEntry value="2">@Strings.Garmin</listEntry>
+            <listEntry value="0">@Strings.Power</listEntry>
+            <listEntry value="1">@Strings.HeartRate</listEntry>
         </settingConfig>
     </setting>
 
-    <setting propertyKey="@Properties.myNumber" title="@Strings.MyNumberTitle" prompt="@Strings.MyNumberPrompt">
+    <setting propertyKey="@Properties.duration" title="@Strings.DurationTitle" prompt="@Strings.MyNumberPrompt">
         <settingConfig type="numeric" errorMessage="@Strings.MyNumberError" />
     </setting>
 
-    <setting propertyKey="@Properties.screenSleep" title="@Strings.ScreenSleepTitle">
-        <settingConfig type="boolean" />
+    <setting propertyKey="@Properties.power" title="@Strings.PowerTitle" prompt="@Strings.MyNumberPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.MyNumberError" />
     </setting>
 
-    <setting propertyKey="@Properties.username" title="@Strings.UsernameTitle">
-        <settingConfig type="alphaNumeric" required="true" />
+    <setting propertyKey="@Properties.heartRate" title="@Strings.HeartRateTitle" prompt="@Strings.MyNumberPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.MyNumberError" />
     </setting>
 
 </settings>

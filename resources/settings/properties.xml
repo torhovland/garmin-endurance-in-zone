@@ -1,7 +1,7 @@
 <properties>
     <property id="appVersion" type="string">1.0.0</property>
-    <property id="myString" type="number">0</property>
-    <property id="myNumber" type="number">9</property>
-    <property id="screenSleep" type="boolean">false</property>
-    <property id="username" type="string">1.0.0</property>
+    <property id="type" type="number">0</property>
+    <property id="duration" type="number">30</property>
+    <property id="power" type="number">200</property>
+    <property id="heartRate" type="number">150</property>
 </properties>

@@ -12,6 +12,9 @@
     <string id="Ackbar">Ackbar</string>
     <string id="Garmin">Garmin</string>
     <string id="AppName">TimeInZone</string>
-
-    <string id="label">My Value</string>
+    <string id="Power">Power</string>
+    <string id="HeartRate">Heart rate</string>
+    <string id="DurationTitle">Time in zone</string>
+    <string id="PowerTitle">Power target</string>
+    <string id="HeartRateTitle">Heart rate target</string>
 </strings>

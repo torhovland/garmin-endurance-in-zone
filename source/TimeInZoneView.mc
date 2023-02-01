@@ -5,15 +5,15 @@ import Toybox.WatchUi;
 
 class TimeInZoneView extends WatchUi.DataField {
 
-    hidden var mValue as Numeric;
+    hidden var settings as Settings;
 
-    function initialize(value) {
+    function initialize(settings) {
         DataField.initialize();
-        self.mValue = value;
+        self.settings = settings;
     }
 
-    function setValue(value) {
-        self.mValue = value;
+    function setSettings(settings) {
+        self.settings = settings;
     }
 
     // Set your layout here. Anytime the size of obscurity of
@@ -46,7 +46,7 @@ class TimeInZoneView extends WatchUi.DataField {
             valueView.locY = valueView.locY + 7;
         }
 
-        (View.findDrawableById("label") as Text).setText(Rez.Strings.label);
+        (View.findDrawableById("label") as Text).setText(settings.duration + "m @ " + settings.power + "W");
     }
 
     // The given info object contains all the current workout information.
@@ -70,7 +70,7 @@ class TimeInZoneView extends WatchUi.DataField {
         } else {
             value.setColor(Graphics.COLOR_BLACK);
         }
-        value.setText(mValue.format("%.2f"));
+        value.setText(settings.power.format("%.2f"));
 
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);
