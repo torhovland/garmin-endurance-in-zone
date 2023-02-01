@@ -6,6 +6,7 @@ import Toybox.WatchUi;
 class TimeInZoneView extends WatchUi.DataField {
 
     hidden var settings as Settings;
+    var current as Number = 0;
 
     function initialize(settings) {
         DataField.initialize();
@@ -54,6 +55,9 @@ class TimeInZoneView extends WatchUi.DataField {
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Void {
+        if (info has :currentPower && info.currentPower != null) {
+            current = info.currentPower as Number;
+        }
     }
 
     // Display the value you computed here. This will be called
@@ -70,7 +74,7 @@ class TimeInZoneView extends WatchUi.DataField {
         } else {
             value.setColor(Graphics.COLOR_BLACK);
         }
-        value.setText(settings.power.format("%.2f"));
+        value.setText(current.format("%.2f"));
 
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);
