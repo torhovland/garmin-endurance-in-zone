@@ -6,7 +6,8 @@ import Toybox.WatchUi;
 class TimeInZoneView extends WatchUi.DataField {
 
     hidden var settings as Settings;
-    var current as Number = 0;
+    var current = 0;
+    var isBelowTarget = true;
 
     function initialize(settings) {
         DataField.initialize();
@@ -46,8 +47,6 @@ class TimeInZoneView extends WatchUi.DataField {
             var valueView = View.findDrawableById("value");
             valueView.locY = valueView.locY + 7;
         }
-
-        (View.findDrawableById("label") as Text).setText(settings.duration + "m @ " + settings.power + "W");
     }
 
     // The given info object contains all the current workout information.
@@ -55,25 +54,37 @@ class TimeInZoneView extends WatchUi.DataField {
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Void {
+        isBelowTarget = true;
+
         if (info has :currentPower && info.currentPower != null) {
             current = info.currentPower as Number;
+
+            if (current >= settings.power) {
+                isBelowTarget = false;
+            }
         }
     }
 
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
     function onUpdate(dc as Dc) as Void {
-        // Set the background color
-        (View.findDrawableById("Background") as Text).setColor(getBackgroundColor());
-        (View.findDrawableById("Background") as Text).setColor(Graphics.COLOR_GREEN);
+        var backgroundColor = Graphics.COLOR_GREEN;
+        var foregroundColor = Graphics.COLOR_BLACK;
 
-        // Set the foreground color and value
-        var value = View.findDrawableById("value") as Text;
-        if (getBackgroundColor() == Graphics.COLOR_BLACK) {
-            value.setColor(Graphics.COLOR_WHITE);
-        } else {
-            value.setColor(Graphics.COLOR_BLACK);
+        if (isBelowTarget) {
+            backgroundColor = Graphics.COLOR_RED;
+            foregroundColor = Graphics.COLOR_WHITE;
         }
+
+        (View.findDrawableById("Background") as Text).setColor(backgroundColor);
+
+        var label = View.findDrawableById("label") as Text;
+        var value = View.findDrawableById("value") as Text;
+
+        label.setColor(foregroundColor);
+        value.setColor(foregroundColor);
+
+        label.setText(settings.duration + "m @ " + settings.power + "W");
         value.setText(current.format("%.2f"));
 
         // Call parent's onUpdate(dc) to redraw the layout
