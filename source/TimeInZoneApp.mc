@@ -4,11 +4,13 @@ import Toybox.WatchUi;
 
 class TimeInZoneApp extends Application.AppBase {
     var view;
-    var settings;
+    var settingsA;
+    var settingsB;
+    var settingsC;
 
     function initialize() {
         AppBase.initialize();
-        settings = readSettings();
+        readSettings();
     }
 
     // onStart() is called on application start up
@@ -20,21 +22,32 @@ class TimeInZoneApp extends Application.AppBase {
     }
 
     function onSettingsChanged() as Void {
-        settings = readSettings();
-        view.setSettings(settings);
+        readSettings();
+        view.setSettingsA(settingsA);
+        view.setSettingsB(settingsB);
+        view.setSettingsC(settingsC);
     }
 
-    function readSettings() as Settings {
+    function readSettings() as Void {
         var type = AppBase.getProperty("type");
-        var duration = AppBase.getProperty("duration");
-        var power = AppBase.getProperty("power");
-        var heartRate = AppBase.getProperty("heartRate");
-        return new Settings(type, duration, power, heartRate);
+        var durationA = AppBase.getProperty("durationA");
+        var powerA = AppBase.getProperty("powerA");
+        var heartRateA = AppBase.getProperty("heartRateA");
+        var durationB = AppBase.getProperty("durationB");
+        var powerB = AppBase.getProperty("powerB");
+        var heartRateB = AppBase.getProperty("heartRateB");
+        var durationC = AppBase.getProperty("durationC");
+        var powerC = AppBase.getProperty("powerC");
+        var heartRateC = AppBase.getProperty("heartRateC");
+
+        settingsA = new Settings(type, durationA, powerA, heartRateA);
+        settingsB = new Settings(type, durationB, powerB, heartRateB);
+        settingsC = new Settings(type, durationC, powerC, heartRateC);
     }
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        view = new TimeInZoneView(settings);
+        view = new TimeInZoneView(settingsA, settingsB, settingsC);
         return [ view ] as Array<Views or InputDelegates>;
     }
 

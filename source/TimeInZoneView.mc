@@ -5,17 +5,32 @@ import Toybox.WatchUi;
 
 class TimeInZoneView extends WatchUi.DataField {
 
-    hidden var settings as Settings;
-    var current = 0;
-    var isBelowTarget = true;
+    hidden var settingsA as Settings;
+    hidden var settingsB as Settings;
+    hidden var settingsC as Settings;
 
-    function initialize(settings) {
+    var current = 0;
+    var isBelowTargetA = true;
+    var isBelowTargetB = true;
+    var isBelowTargetC = true;
+
+    function initialize(settingsA, settingsB, settingsC) {
         DataField.initialize();
-        self.settings = settings;
+        self.settingsA = settingsA;
+        self.settingsB = settingsB;
+        self.settingsC = settingsC;
     }
 
-    function setSettings(settings) {
-        self.settings = settings;
+    function setSettingsA(settings) {
+        self.settingsA = settings;
+    }
+
+    function setSettingsB(settings) {
+        self.settingsB = settings;
+    }
+
+    function setSettingsC(settings) {
+        self.settingsC = settings;
     }
 
     // Set your layout here. Anytime the size of obscurity of
@@ -37,13 +52,21 @@ class TimeInZoneView extends WatchUi.DataField {
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Void {
         current = 0;
-        isBelowTarget = true;
+        isBelowTargetA = true;
+        isBelowTargetB = true;
+        isBelowTargetC = true;
 
         if (info has :currentPower && info.currentPower != null) {
             current = info.currentPower as Number;
 
-            if (current >= settings.power) {
-                isBelowTarget = false;
+            if (current >= settingsA.power) {
+                isBelowTargetA = false;
+            }
+            if (current >= settingsB.power) {
+                isBelowTargetB = false;
+            }
+            if (current >= settingsC.power) {
+                isBelowTargetC = false;
             }
         }
     }
@@ -51,12 +74,27 @@ class TimeInZoneView extends WatchUi.DataField {
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
     function onUpdate(dc as Dc) as Void {
-        var backgroundColor = Graphics.COLOR_GREEN;
-        var foregroundColor = Graphics.COLOR_BLACK;
+        var backgroundColorA = Graphics.COLOR_GREEN;
+        var backgroundColorB = Graphics.COLOR_GREEN;
+        var backgroundColorC = Graphics.COLOR_GREEN;
 
-        if (isBelowTarget) {
-            backgroundColor = Graphics.COLOR_RED;
-            foregroundColor = Graphics.COLOR_WHITE;
+        var foregroundColorA = Graphics.COLOR_BLACK;
+        var foregroundColorB = Graphics.COLOR_BLACK;
+        var foregroundColorC = Graphics.COLOR_BLACK;
+
+        if (isBelowTargetA) {
+            backgroundColorA = Graphics.COLOR_RED;
+            foregroundColorA = Graphics.COLOR_WHITE;
+        }
+
+        if (isBelowTargetB) {
+            backgroundColorB = Graphics.COLOR_RED;
+            foregroundColorB = Graphics.COLOR_WHITE;
+        }
+
+        if (isBelowTargetC) {
+            backgroundColorC = Graphics.COLOR_RED;
+            foregroundColorC = Graphics.COLOR_WHITE;
         }
 
         var background = View.findDrawableById("Background") as Text;
@@ -70,13 +108,13 @@ class TimeInZoneView extends WatchUi.DataField {
         var labelB = View.findDrawableById("labelB") as Text;
         var labelC = View.findDrawableById("labelC") as Text;
 
-        labelA.setColor(foregroundColor);
-        labelB.setColor(foregroundColor);
-        labelC.setColor(foregroundColor);
+        labelA.setColor(foregroundColorA);
+        labelB.setColor(foregroundColorB);
+        labelC.setColor(foregroundColorC);
 
-        labelA.setText(settings.duration + "m @ " + settings.power + "W:" + current + ":" + current);
-        labelB.setText(settings.duration + "m @ " + settings.power + "W:" + current + ":" + current);
-        labelC.setText(settings.duration + "m @ " + settings.power + "W:" + current + ":" + current);
+        labelA.setText(settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + current);
+        labelB.setText(settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + current);
+        labelC.setText(settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + current);
 
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);

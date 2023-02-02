@@ -1,7 +1,13 @@
 <properties>
     <property id="appVersion" type="string">1.0.0</property>
     <property id="type" type="number">0</property>
-    <property id="duration" type="number">30</property>
-    <property id="power" type="number">200</property>
-    <property id="heartRate" type="number">150</property>
+    <property id="durationA" type="number">45</property>
+    <property id="powerA" type="number">150</property>
+    <property id="heartRateA" type="number">150</property>
+    <property id="durationB" type="number">15</property>
+    <property id="powerB" type="number">200</property>
+    <property id="heartRateB" type="number">160</property>
+    <property id="durationC" type="number">5</property>
+    <property id="powerC" type="number">250</property>
+    <property id="heartRateC" type="number">170</property>
 </properties>

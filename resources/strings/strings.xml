@@ -1,20 +1,19 @@
 <strings>
     <string id="AppName">Time in Zone</string>
     <string id="AppVersionTitle">App version</string>
-    <string id="MyStringTitle">My string</string>
-    <string id="MyStringPrompt">My string prompt</string>
-    <string id="MyNumberTitle">My number</string>
-    <string id="MyNumberPrompt">My number prompt</string>
-    <string id="MyNumberError">My number error</string>
-    <string id="ScreenSleepTitle">Screen sleep</string>
-    <string id="UsernameTitle">Username</string>
-    <string id="HelloWorld">Hello world</string>
-    <string id="Ackbar">Ackbar</string>
-    <string id="Garmin">Garmin</string>
-    <string id="AppName">TimeInZone</string>
+    <string id="ZoneType">Zone type</string>
     <string id="Power">Power</string>
     <string id="HeartRate">Heart rate</string>
-    <string id="DurationTitle">Time in zone</string>
-    <string id="PowerTitle">Power target</string>
-    <string id="HeartRateTitle">Heart rate target</string>
+    <string id="DurationPrompt">Enter duration in minutes</string>
+    <string id="PowerPrompt">Enter power target in W</string>
+    <string id="HeartRatePrompt">Enter heart rate target in bpm</string>
+    <string id="DurationATitle">Time in zone A</string>
+    <string id="PowerATitle">Power target in zone A</string>
+    <string id="HeartRateATitle">Heart rate target in zone A</string>
+    <string id="DurationBTitle">Time in zone B</string>
+    <string id="PowerBTitle">Power target in zone B</string>
+    <string id="HeartRateBTitle">Heart rate target in zone B</string>
+    <string id="DurationCTitle">Time in zone C</string>
+    <string id="PowerCTitle">Power target in zone C</string>
+    <string id="HeartRateCTitle">Heart rate target in zone C</string>
 </strings>

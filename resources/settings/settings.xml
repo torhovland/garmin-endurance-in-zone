@@ -4,23 +4,47 @@
         <settingConfig type="alphaNumeric" readonly="true" />
     </setting>
 
-    <setting propertyKey="@Properties.type" title="@Strings.MyStringTitle" prompt="@Strings.MyStringPrompt">
+    <setting propertyKey="@Properties.type" title="@Strings.ZoneType">
         <settingConfig type="list">
             <listEntry value="0">@Strings.Power</listEntry>
             <listEntry value="1">@Strings.HeartRate</listEntry>
         </settingConfig>
     </setting>
 
-    <setting propertyKey="@Properties.duration" title="@Strings.DurationTitle" prompt="@Strings.MyNumberPrompt">
-        <settingConfig type="numeric" errorMessage="@Strings.MyNumberError" />
+    <setting propertyKey="@Properties.durationA" title="@Strings.DurationATitle" prompt="@Strings.DurationPrompt">
+        <settingConfig type="numeric" />
     </setting>
 
-    <setting propertyKey="@Properties.power" title="@Strings.PowerTitle" prompt="@Strings.MyNumberPrompt">
-        <settingConfig type="numeric" errorMessage="@Strings.MyNumberError" />
+    <setting propertyKey="@Properties.powerA" title="@Strings.PowerATitle" prompt="@Strings.PowerPrompt">
+        <settingConfig type="numeric" />
     </setting>
 
-    <setting propertyKey="@Properties.heartRate" title="@Strings.HeartRateTitle" prompt="@Strings.MyNumberPrompt">
-        <settingConfig type="numeric" errorMessage="@Strings.MyNumberError" />
+    <setting propertyKey="@Properties.heartRateA" title="@Strings.HeartRateATitle" prompt="@Strings.HeartRatePrompt">
+        <settingConfig type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.durationB" title="@Strings.DurationBTitle" prompt="@Strings.DurationPrompt">
+        <settingConfig type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.powerB" title="@Strings.PowerBTitle" prompt="@Strings.PowerPrompt">
+        <settingConfig type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.heartRateB" title="@Strings.HeartRateBTitle" prompt="@Strings.HeartRatePrompt">
+        <settingConfig type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.durationC" title="@Strings.DurationCTitle" prompt="@Strings.DurationPrompt">
+        <settingConfig type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.powerC" title="@Strings.PowerCTitle" prompt="@Strings.PowerPrompt">
+        <settingConfig type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.heartRateC" title="@Strings.HeartRateCTitle" prompt="@Strings.HeartRatePrompt">
+        <settingConfig type="numeric" />
     </setting>
 
 </settings>
