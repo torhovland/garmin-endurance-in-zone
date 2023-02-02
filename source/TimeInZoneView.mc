@@ -21,32 +21,14 @@ class TimeInZoneView extends WatchUi.DataField {
     // Set your layout here. Anytime the size of obscurity of
     // the draw context is changed this will be called.
     function onLayout(dc as Dc) as Void {
-        var obscurityFlags = DataField.getObscurityFlags();
+        View.setLayout(Rez.Layouts.MainLayout(dc));
 
-        // Top left quadrant so we'll use the top left layout
-        if (obscurityFlags == (OBSCURE_TOP | OBSCURE_LEFT)) {
-            View.setLayout(Rez.Layouts.TopLeftLayout(dc));
-
-        // Top right quadrant so we'll use the top right layout
-        } else if (obscurityFlags == (OBSCURE_TOP | OBSCURE_RIGHT)) {
-            View.setLayout(Rez.Layouts.TopRightLayout(dc));
-
-        // Bottom left quadrant so we'll use the bottom left layout
-        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_LEFT)) {
-            View.setLayout(Rez.Layouts.BottomLeftLayout(dc));
-
-        // Bottom right quadrant so we'll use the bottom right layout
-        } else if (obscurityFlags == (OBSCURE_BOTTOM | OBSCURE_RIGHT)) {
-            View.setLayout(Rez.Layouts.BottomRightLayout(dc));
-
-        // Use the generic, centered layout
-        } else {
-            View.setLayout(Rez.Layouts.MainLayout(dc));
-            var labelView = View.findDrawableById("label");
-            labelView.locY = labelView.locY - 16;
-            var valueView = View.findDrawableById("value");
-            valueView.locY = valueView.locY + 7;
-        }
+        var labelAView = View.findDrawableById("labelA");
+        labelAView.locY = labelAView.locY - 19;
+        var labelBView = View.findDrawableById("labelB");
+        labelBView.locY = labelBView.locY - 2;
+        var labelCView = View.findDrawableById("labelC");
+        labelCView.locY = labelCView.locY + 15;
     }
 
     // The given info object contains all the current workout information.
@@ -54,6 +36,7 @@ class TimeInZoneView extends WatchUi.DataField {
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Void {
+        current = 0;
         isBelowTarget = true;
 
         if (info has :currentPower && info.currentPower != null) {
@@ -76,16 +59,24 @@ class TimeInZoneView extends WatchUi.DataField {
             foregroundColor = Graphics.COLOR_WHITE;
         }
 
-        (View.findDrawableById("Background") as Text).setColor(backgroundColor);
+        var background = View.findDrawableById("Background") as Text;
+        background.setColor(Graphics.COLOR_WHITE);
 
-        var label = View.findDrawableById("label") as Text;
-        var value = View.findDrawableById("value") as Text;
+        var zoneA = View.findDrawableById("zoneA") as Drawable;
+        var zoneB = View.findDrawableById("zoneB") as Drawable;
+        var zoneC = View.findDrawableById("zoneC") as Drawable;
+        
+        var labelA = View.findDrawableById("labelA") as Text;
+        var labelB = View.findDrawableById("labelB") as Text;
+        var labelC = View.findDrawableById("labelC") as Text;
 
-        label.setColor(foregroundColor);
-        value.setColor(foregroundColor);
+        labelA.setColor(foregroundColor);
+        labelB.setColor(foregroundColor);
+        labelC.setColor(foregroundColor);
 
-        label.setText(settings.duration + "m @ " + settings.power + "W");
-        value.setText(current.format("%.2f"));
+        labelA.setText(settings.duration + "m @ " + settings.power + "W:" + current + ":" + current);
+        labelB.setText(settings.duration + "m @ " + settings.power + "W:" + current + ":" + current);
+        labelC.setText(settings.duration + "m @ " + settings.power + "W:" + current + ":" + current);
 
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);

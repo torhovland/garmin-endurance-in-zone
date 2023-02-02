@@ -1,3 +1,15 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+
+    <drawable-list id="zoneC" >
+        <shape type="rectangle" x="0" y="66%" width="100%" height="33%" color="Gfx.COLOR_RED" />
+    </drawable-list>
+
+    <drawable-list id="zoneB" >
+        <shape type="rectangle" x="0" y="33%" width="100%" height="33%" color="Gfx.COLOR_BLUE" />
+    </drawable-list>
+
+    <drawable-list id="zoneA" >
+        <shape type="rectangle" x="0" y="0" width="100%" height="33%" color="Gfx.COLOR_YELLOW" />
+    </drawable-list>
 </drawables>
