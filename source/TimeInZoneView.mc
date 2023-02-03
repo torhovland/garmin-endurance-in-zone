@@ -15,10 +15,14 @@ class TimeInZoneView extends WatchUi.DataField {
 
     var current = 0;
     var time;
-    var incrementMs;
+
     var isBelowTargetA = true;
     var isBelowTargetB = true;
     var isBelowTargetC = true;
+
+    var zoneAMs = 0;
+    var zoneBMs = 0;
+    var zoneCMs = 0;
 
     function initialize(settingsA, settingsB, settingsC) {
         DataField.initialize();
@@ -52,22 +56,25 @@ class TimeInZoneView extends WatchUi.DataField {
         if (info has :currentPower && info.currentPower != null) {
             current = info.currentPower as Number;
 
-            if (current >= settingsA.power) {
-                isBelowTargetA = false;
-            }
-            if (current >= settingsB.power) {
-                isBelowTargetB = false;
-            }
-            if (current >= settingsC.power) {
-                isBelowTargetC = false;
-            }
-
             if (info has :timerTime && info.timerTime != null) {
                 var previousTime = time;
                 time = info.timerTime;
 
-                if (previousTime > 0) {
-                    incrementMs = time - previousTime;
+                if (previousTime != null) {
+                    var incrementMs = time - previousTime;
+
+                    if (current >= settingsA.power) {
+                        isBelowTargetA = false;
+                        zoneAMs += incrementMs;
+                    }
+                    if (current >= settingsB.power) {
+                        isBelowTargetB = false;
+                        zoneBMs += incrementMs;
+                    }
+                    if (current >= settingsC.power) {
+                        isBelowTargetC = false;
+                        zoneCMs += incrementMs;
+                    }
                 }
             }
         }
@@ -113,19 +120,23 @@ class TimeInZoneView extends WatchUi.DataField {
         dc.setColor(zoneCColor, zoneCColor);
         dc.fillRectangle(0, height * 2 / 3, width, height / 3);
 
+        var zoneAPercentage = zoneAMs * 100.0 / settingsA.duration / 60.0 / 1000.0;
+        var zoneBPercentage = zoneBMs * 100.0 / settingsB.duration / 60.0 / 1000.0;
+        var zoneCPercentage = zoneCMs * 100.0 / settingsC.duration / 60.0 / 1000.0;
+
         dc.setColor(foregroundColorA, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, -3, Graphics.FONT_SMALL,
-            settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + incrementMs,
+            settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + zoneAPercentage,
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorB, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height / 3 - 3, Graphics.FONT_SMALL,
-            settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + incrementMs,
+            settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + zoneBPercentage,
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorC, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 2 / 3 - 3, Graphics.FONT_SMALL,
-            settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + incrementMs,
+            settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + zoneCPercentage,
             Graphics.TEXT_JUSTIFY_CENTER);
     }
 
