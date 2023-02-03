@@ -14,6 +14,8 @@ class TimeInZoneView extends WatchUi.DataField {
     hidden var settingsC as Settings;
 
     var current = 0;
+    var time;
+    var incrementMs;
     var isBelowTargetA = true;
     var isBelowTargetB = true;
     var isBelowTargetC = true;
@@ -58,6 +60,15 @@ class TimeInZoneView extends WatchUi.DataField {
             }
             if (current >= settingsC.power) {
                 isBelowTargetC = false;
+            }
+
+            if (info has :timerTime && info.timerTime != null) {
+                var previousTime = time;
+                time = info.timerTime;
+
+                if (previousTime > 0) {
+                    incrementMs = time - previousTime;
+                }
             }
         }
     }
@@ -104,17 +115,17 @@ class TimeInZoneView extends WatchUi.DataField {
 
         dc.setColor(foregroundColorA, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, -3, Graphics.FONT_SMALL,
-            settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + current,
+            settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + incrementMs,
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorB, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height / 3 - 3, Graphics.FONT_SMALL,
-            settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + current,
+            settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + incrementMs,
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorC, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 2 / 3 - 3, Graphics.FONT_SMALL,
-            settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + current,
+            settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + incrementMs,
             Graphics.TEXT_JUSTIFY_CENTER);
     }
 
