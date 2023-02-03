@@ -3,6 +3,10 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+var ZoneAColor = Graphics.COLOR_GREEN;
+var ZoneBColor = Graphics.COLOR_GREEN;
+var ZoneCColor = Graphics.COLOR_GREEN;
+
 class TimeInZoneView extends WatchUi.DataField {
 
     hidden var settingsA as Settings;
@@ -33,19 +37,6 @@ class TimeInZoneView extends WatchUi.DataField {
         self.settingsC = settings;
     }
 
-    // Set your layout here. Anytime the size of obscurity of
-    // the draw context is changed this will be called.
-    function onLayout(dc as Dc) as Void {
-        View.setLayout(Rez.Layouts.MainLayout(dc));
-
-        var labelAView = View.findDrawableById("labelA");
-        labelAView.locY = labelAView.locY - 19;
-        var labelBView = View.findDrawableById("labelB");
-        labelBView.locY = labelBView.locY - 2;
-        var labelCView = View.findDrawableById("labelC");
-        labelCView.locY = labelCView.locY + 15;
-    }
-
     // The given info object contains all the current workout information.
     // Calculate a value and save it locally in this method.
     // Note that compute() and onUpdate() are asynchronous, and there is no
@@ -74,50 +65,57 @@ class TimeInZoneView extends WatchUi.DataField {
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
     function onUpdate(dc as Dc) as Void {
-        var backgroundColorA = Graphics.COLOR_GREEN;
-        var backgroundColorB = Graphics.COLOR_GREEN;
-        var backgroundColorC = Graphics.COLOR_GREEN;
+        var width = dc.getWidth();
+        var height = dc.getHeight();
+        
+        var zoneAColor = Graphics.COLOR_GREEN;
+        var zoneBColor = Graphics.COLOR_GREEN;
+        var zoneCColor = Graphics.COLOR_GREEN;
 
         var foregroundColorA = Graphics.COLOR_BLACK;
         var foregroundColorB = Graphics.COLOR_BLACK;
         var foregroundColorC = Graphics.COLOR_BLACK;
 
         if (isBelowTargetA) {
-            backgroundColorA = Graphics.COLOR_RED;
+            zoneAColor = Graphics.COLOR_RED;
             foregroundColorA = Graphics.COLOR_WHITE;
         }
 
         if (isBelowTargetB) {
-            backgroundColorB = Graphics.COLOR_RED;
+            zoneBColor = Graphics.COLOR_RED;
             foregroundColorB = Graphics.COLOR_WHITE;
         }
 
         if (isBelowTargetC) {
-            backgroundColorC = Graphics.COLOR_RED;
+            zoneCColor = Graphics.COLOR_RED;
             foregroundColorC = Graphics.COLOR_WHITE;
         }
 
-        var background = View.findDrawableById("Background") as Text;
-        background.setColor(Graphics.COLOR_WHITE);
-
-        var zoneA = View.findDrawableById("zoneA") as Drawable;
-        var zoneB = View.findDrawableById("zoneB") as Drawable;
-        var zoneC = View.findDrawableById("zoneC") as Drawable;
-        
         var labelA = View.findDrawableById("labelA") as Text;
         var labelB = View.findDrawableById("labelB") as Text;
         var labelC = View.findDrawableById("labelC") as Text;
 
-        labelA.setColor(foregroundColorA);
-        labelB.setColor(foregroundColorB);
-        labelC.setColor(foregroundColorC);
+        dc.setColor(zoneAColor, zoneAColor);
+        dc.fillRectangle(0, 0, width, height / 3);
+        dc.setColor(zoneBColor, zoneBColor);
+        dc.fillRectangle(0, height / 3, width, height / 3);
+        dc.setColor(zoneCColor, zoneCColor);
+        dc.fillRectangle(0, height * 2 / 3, width, height / 3);
 
-        labelA.setText(settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + current);
-        labelB.setText(settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + current);
-        labelC.setText(settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + current);
+        dc.setColor(foregroundColorA, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, -3, Graphics.FONT_SMALL,
+            settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + current,
+            Graphics.TEXT_JUSTIFY_CENTER);
 
-        // Call parent's onUpdate(dc) to redraw the layout
-        View.onUpdate(dc);
+        dc.setColor(foregroundColorB, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, height / 3 - 3, Graphics.FONT_SMALL,
+            settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + current,
+            Graphics.TEXT_JUSTIFY_CENTER);
+
+        dc.setColor(foregroundColorC, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, height * 2 / 3 - 3, Graphics.FONT_SMALL,
+            settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + current,
+            Graphics.TEXT_JUSTIFY_CENTER);
     }
 
 }
