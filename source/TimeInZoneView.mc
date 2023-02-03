@@ -126,17 +126,17 @@ class TimeInZoneView extends WatchUi.DataField {
 
         dc.setColor(foregroundColorA, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, -3, Graphics.FONT_SMALL,
-            settingsA.duration + "m @ " + settingsA.power + "W:" + current + ":" + zoneAPercentage,
+            settingsA.duration + "m @ " + settingsA.power + "W: " + zoneAPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorB, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height / 3 - 3, Graphics.FONT_SMALL,
-            settingsB.duration + "m @ " + settingsB.power + "W:" + current + ":" + zoneBPercentage,
+            settingsB.duration + "m @ " + settingsB.power + "W: " + zoneBPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorC, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 2 / 3 - 3, Graphics.FONT_SMALL,
-            settingsC.duration + "m @ " + settingsC.power + "W:" + current + ":" + zoneCPercentage,
+            settingsC.duration + "m @ " + settingsC.power + "W: " + zoneCPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
     }
 
