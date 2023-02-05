@@ -10,14 +10,6 @@ class TimeInZoneApp extends Application.AppBase {
         view = new TimeInZoneView(readSettings());
     }
 
-    // onStart() is called on application start up
-    function onStart(state as Dictionary?) as Void {
-    }
-
-    // onStop() is called when your application is exiting
-    function onStop(state as Dictionary?) as Void {
-    }
-
     function onSettingsChanged() as Void {
         view.setSettings(readSettings());
     }
@@ -37,7 +29,6 @@ class TimeInZoneApp extends Application.AppBase {
         return [ readZoneSettings("A"), readZoneSettings("B"), readZoneSettings("C") ];
     }
 
-    // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
         return [ view ] as Array<Views or InputDelegates>;
     }

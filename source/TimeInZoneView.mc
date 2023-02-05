@@ -24,10 +24,6 @@ class TimeInZoneView extends WatchUi.DataField {
         self.settings = settings;
     }
 
-    // The given info object contains all the current workout information.
-    // Calculate a value and save it locally in this method.
-    // Note that compute() and onUpdate() are asynchronous, and there is no
-    // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Void {
         current = 0;
         isBelowTarget = [ true, true, true ];
@@ -53,8 +49,6 @@ class TimeInZoneView extends WatchUi.DataField {
         }
     }
 
-    // Display the value you computed here. This will be called
-    // once a second when the data field is visible.
     function onUpdate(dc as Dc) as Void {
         var width = dc.getWidth();
         var height = dc.getHeight();
