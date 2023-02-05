@@ -3,6 +3,8 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+var MaxNumberOfZones = 3;
+
 class TimeInZoneView extends WatchUi.DataField {
     private var settings as Array<ZoneSettings>;
     private var current = 0;
@@ -38,7 +40,7 @@ class TimeInZoneView extends WatchUi.DataField {
                 if (previousTime != null && time > previousTime) {
                     var incrementMs = time - previousTime;
 
-                    for (var zone=0; zone<3; zone++) {
+                    for (var zone=0; zone<MaxNumberOfZones; zone++) {
                         if (current >= settings[zone].power) {
                             isBelowTarget[zone] = false;
                             zoneMs[zone] += incrementMs;
@@ -57,7 +59,7 @@ class TimeInZoneView extends WatchUi.DataField {
         var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ];
         var zonePercentage = [0, 0, 0] as Array<Number>;
 
-        for (var zone=0; zone<3; zone++) {
+        for (var zone=0; zone<MaxNumberOfZones; zone++) {
             if (isBelowTarget[zone]) {
                 zoneColor[zone] = Graphics.COLOR_RED;
                 foregroundColor[zone] = Graphics.COLOR_WHITE;
@@ -66,10 +68,10 @@ class TimeInZoneView extends WatchUi.DataField {
             zonePercentage[zone] = zoneMs[zone] * 100.0 / settings[zone].duration / 60.0 / 1000.0;
 
             dc.setColor(zoneColor[zone], zoneColor[zone]);
-            dc.fillRectangle(0, height * zone / 3, width, height / 3);
+            dc.fillRectangle(0, height * zone / MaxNumberOfZones, width, height / MaxNumberOfZones);
 
             dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);
-            dc.drawText(width / 2, height * zone / 3, Graphics.FONT_SMALL,
+            dc.drawText(width / 2, height * zone / MaxNumberOfZones, Graphics.FONT_SMALL,
                 settings[zone].duration + "m > " + settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "%",
                 Graphics.TEXT_JUSTIFY_CENTER);
         }
