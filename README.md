@@ -13,6 +13,7 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [ ] Display properly on various data field sizes.
 - [ ] Use heart rate instead of power.
 - [ ] Test on all devices using simulator.
+- [ ] Unit tests.
 - [ ] Update docs.
 - [ ] Update images.
 - [ ] Refactor code.
