@@ -3,10 +3,10 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-var MaxNumberOfZones = 3;
-var NumberOfReadings = 30;
-
 class TimeInZoneView extends WatchUi.DataField {
+    private const MaxNumberOfZones = 3;
+    private const NumberOfReadings = 30;
+
     private var settings as Array<ZoneSettings>;
     private var readings = new Array<Number>[NumberOfReadings];
     private var isBelowTarget = new Array<Boolean>[MaxNumberOfZones];
