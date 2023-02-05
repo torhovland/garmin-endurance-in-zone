@@ -3,10 +3,6 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-var ZoneAColor = Graphics.COLOR_GREEN;
-var ZoneBColor = Graphics.COLOR_GREEN;
-var ZoneCColor = Graphics.COLOR_GREEN;
-
 class TimeInZoneView extends WatchUi.DataField {
     hidden var settings as Array<ZoneSettings>;
 
@@ -81,55 +77,50 @@ class TimeInZoneView extends WatchUi.DataField {
         var width = dc.getWidth();
         var height = dc.getHeight();
         
-        var zoneAColor = Graphics.COLOR_GREEN;
-        var zoneBColor = Graphics.COLOR_GREEN;
-        var zoneCColor = Graphics.COLOR_GREEN;
-
-        var foregroundColorA = Graphics.COLOR_BLACK;
-        var foregroundColorB = Graphics.COLOR_BLACK;
-        var foregroundColorC = Graphics.COLOR_BLACK;
+        var zoneColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ];
+        var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ];
 
         if (isBelowTargetA) {
-            zoneAColor = Graphics.COLOR_RED;
-            foregroundColorA = Graphics.COLOR_WHITE;
+            zoneColor[0] = Graphics.COLOR_RED;
+            foregroundColor[0] = Graphics.COLOR_WHITE;
         }
 
         if (isBelowTargetB) {
-            zoneBColor = Graphics.COLOR_RED;
-            foregroundColorB = Graphics.COLOR_WHITE;
+            zoneColor[1] = Graphics.COLOR_RED;
+            foregroundColor[1] = Graphics.COLOR_WHITE;
         }
 
         if (isBelowTargetC) {
-            zoneCColor = Graphics.COLOR_RED;
-            foregroundColorC = Graphics.COLOR_WHITE;
+            zoneColor[2] = Graphics.COLOR_RED;
+            foregroundColor[2] = Graphics.COLOR_WHITE;
         }
 
         var labelA = View.findDrawableById("labelA") as Text;
         var labelB = View.findDrawableById("labelB") as Text;
         var labelC = View.findDrawableById("labelC") as Text;
 
-        dc.setColor(zoneAColor, zoneAColor);
+        dc.setColor(zoneColor[0], zoneColor[0]);
         dc.fillRectangle(0, 0, width, height / 3);
-        dc.setColor(zoneBColor, zoneBColor);
+        dc.setColor(zoneColor[1], zoneColor[1]);
         dc.fillRectangle(0, height / 3, width, height / 3);
-        dc.setColor(zoneCColor, zoneCColor);
+        dc.setColor(zoneColor[2], zoneColor[2]);
         dc.fillRectangle(0, height * 2 / 3, width, height / 3);
 
         var zoneAPercentage = zoneAMs * 100.0 / settings[0].duration / 60.0 / 1000.0;
         var zoneBPercentage = zoneBMs * 100.0 / settings[1].duration / 60.0 / 1000.0;
         var zoneCPercentage = zoneCMs * 100.0 / settings[2].duration / 60.0 / 1000.0;
 
-        dc.setColor(foregroundColorA, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(foregroundColor[0], Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, 0, Graphics.FONT_SMALL,
             settings[0].duration + "m > " + settings[0].power + "W: " + zoneAPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
 
-        dc.setColor(foregroundColorB, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(foregroundColor[1], Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height / 3, Graphics.FONT_SMALL,
             settings[1].duration + "m > " + settings[1].power + "W: " + zoneBPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
 
-        dc.setColor(foregroundColorC, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(foregroundColor[2], Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 2 / 3, Graphics.FONT_SMALL,
             settings[2].duration + "m > " + settings[2].power + "W: " + zoneCPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
