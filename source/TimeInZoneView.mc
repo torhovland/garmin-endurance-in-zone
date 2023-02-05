@@ -80,13 +80,24 @@ class TimeInZoneView extends WatchUi.DataField {
     public function onUpdate(dc as Dc) as Void {
         var width = dc.getWidth();
         var height = dc.getHeight();
-        var textDimensions = dc.getTextDimensions("999m > 999W: 999.9%", font);
-        var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
         var zoneColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ] as Array<ColorValue>;
         var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ] as Array<ColorValue>;
         var zonePercentage = new Array<Float>[MaxNumberOfZones];
         var average = calculateAverage();
         var zoneGuiSlot = 0;
+        var truncate = false;
+        var label = "";
+
+        var textDimensions = dc.getTextDimensions("999m > 999W: 999.9%", font);
+
+        if (textDimensions[0] > width) {
+            truncate = true;
+        }
+
+        var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
+
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);            
+        dc.clear();
 
         for (var zone=0; zone<MaxNumberOfZones; zone++) {            
             if (!settings[zone].include) {
@@ -106,13 +117,18 @@ class TimeInZoneView extends WatchUi.DataField {
                 zonePercentage[zone] = ms * 100.0 / settings[zone].duration / 60.0 / 1000.0;
             }
 
+            if (truncate) {
+                label = settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "%";
+            } else {
+                label = settings[zone].duration + "m > " + settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "%";
+            }
+
             dc.setColor(zoneColor[zone], zoneColor[zone]);
             dc.fillRectangle(0, height * zoneGuiSlot / numberOfZones, width, height / numberOfZones);
 
-            dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);
+            dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);            
             dc.drawText(width / 2, height * zoneGuiSlot / numberOfZones + (verticalOffset as Number), font,
-                settings[zone].duration + "m > " + settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "% (" + readings[readingIndex] + ":" + average.format("%.1f") ,
-                Graphics.TEXT_JUSTIFY_CENTER);
+                label, Graphics.TEXT_JUSTIFY_CENTER);
 
             zoneGuiSlot++;
         }
