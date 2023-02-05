@@ -11,6 +11,7 @@ class TimeInZoneApp extends Application.AppBase {
     function initialize() {
         AppBase.initialize();
         readSettings();
+        view = new TimeInZoneView(settingsA, settingsB, settingsC);
     }
 
     // onStart() is called on application start up
@@ -47,7 +48,6 @@ class TimeInZoneApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        view = new TimeInZoneView(settingsA, settingsB, settingsC);
         return [ view ] as Array<Views or InputDelegates>;
     }
 

@@ -20,15 +20,23 @@ class TimeInZoneView extends WatchUi.DataField {
     var isBelowTargetB = true;
     var isBelowTargetC = true;
 
-    var zoneAMs = 0;
-    var zoneBMs = 0;
-    var zoneCMs = 0;
+    var zoneAMs;
+    var zoneBMs;
+    var zoneCMs;
 
     function initialize(settingsA, settingsB, settingsC) {
         DataField.initialize();
         self.settingsA = settingsA;
         self.settingsB = settingsB;
         self.settingsC = settingsC;
+        onTimerReset();
+    }
+
+    function onTimerReset() as Void {
+        time = null;
+        zoneAMs = 0;
+        zoneBMs = 0;
+        zoneCMs = 0;
     }
 
     function setSettingsA(settings) {
@@ -60,7 +68,7 @@ class TimeInZoneView extends WatchUi.DataField {
                 var previousTime = time;
                 time = info.timerTime;
 
-                if (previousTime != null) {
+                if (previousTime != null && time > previousTime) {
                     var incrementMs = time - previousTime;
 
                     if (current >= settingsA.power) {
