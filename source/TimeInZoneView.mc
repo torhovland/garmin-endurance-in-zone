@@ -14,6 +14,7 @@ class TimeInZoneView extends WatchUi.DataField {
     private var zoneMs as Array<Number> = new Array<Number>[MaxNumberOfZones];
     private var readingIndex as Number = 0;
     private var time as Number?;
+    private var font as FontDefinition = Graphics.FONT_SMALL;
 
     public function initialize(settings as Array<ZoneSettings>) {
         DataField.initialize();
@@ -22,8 +23,7 @@ class TimeInZoneView extends WatchUi.DataField {
     }
 
     public function setSettings(settings as Array<ZoneSettings>) as Void {
-        self.settings = settings;
-        self.numberOfZones = countNumberOfZones();
+        initialize(settings);
     }
 
     public function onTimerReset() as Void {
@@ -80,7 +80,8 @@ class TimeInZoneView extends WatchUi.DataField {
     public function onUpdate(dc as Dc) as Void {
         var width = dc.getWidth();
         var height = dc.getHeight();
-        
+        var textDimensions = dc.getTextDimensions("999m > 999W: 999.9%", font);
+        var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
         var zoneColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ] as Array<ColorValue>;
         var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ] as Array<ColorValue>;
         var zonePercentage = new Array<Float>[MaxNumberOfZones];
@@ -109,7 +110,7 @@ class TimeInZoneView extends WatchUi.DataField {
             dc.fillRectangle(0, height * zoneGuiSlot / numberOfZones, width, height / numberOfZones);
 
             dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);
-            dc.drawText(width / 2, height * zoneGuiSlot / numberOfZones, Graphics.FONT_SMALL,
+            dc.drawText(width / 2, height * zoneGuiSlot / numberOfZones + (verticalOffset as Number), font,
                 settings[zone].duration + "m > " + settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "% (" + readings[readingIndex] + ":" + average.format("%.1f") ,
                 Graphics.TEXT_JUSTIFY_CENTER);
 
