@@ -8,11 +8,11 @@ class TimeInZoneView extends WatchUi.DataField {
     private const NumberOfReadings = 30;
 
     private var settings as Array<ZoneSettings>;
-    private var readings = new Array<Number>[NumberOfReadings];
-    private var isBelowTarget = new Array<Boolean>[MaxNumberOfZones];
-    private var zoneMs = new Array<Number>[MaxNumberOfZones];
-    private var readingIndex = 0;
-    private var time;
+    private var readings as Array<Number> = new Array<Number>[NumberOfReadings];
+    private var isBelowTarget as Array<Boolean> = new Array<Boolean>[MaxNumberOfZones];
+    private var zoneMs as Array<Number> = new Array<Number>[MaxNumberOfZones];
+    private var readingIndex as Number = 0;
+    private var time as Number?;
 
     public function initialize(settings as Array<ZoneSettings>) {
         DataField.initialize();
@@ -37,7 +37,7 @@ class TimeInZoneView extends WatchUi.DataField {
         }
 
         readings[readingIndex] = 0;
-        isBelowTarget = [ true, true, true ];
+        isBelowTarget = [ true, true, true ] as Array<Boolean>;
 
         if (info has :currentPower && info.currentPower != null) {
             readings[readingIndex] = info.currentPower as Number;
@@ -46,11 +46,11 @@ class TimeInZoneView extends WatchUi.DataField {
                 var previousTime = time;
                 time = info.timerTime;
 
-                if (previousTime == null || time <= previousTime) {
+                if (previousTime == null || time == null || time <= previousTime) {
                     return;
                 }
 
-                var incrementMs = time - previousTime;
+                var incrementMs = (time as Number) - (previousTime as Number);
                 var average = calculateAverage();
 
                 for (var zone=0; zone<MaxNumberOfZones; zone++) {                    
@@ -74,8 +74,8 @@ class TimeInZoneView extends WatchUi.DataField {
         var width = dc.getWidth();
         var height = dc.getHeight();
         
-        var zoneColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ];
-        var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ];
+        var zoneColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ] as Array<ColorValue>;
+        var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ] as Array<ColorValue>;
         var zonePercentage = new Array<Float>[MaxNumberOfZones];
         var average = calculateAverage();
 
