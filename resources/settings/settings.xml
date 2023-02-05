@@ -23,6 +23,10 @@
         <settingConfig type="numeric" />
     </setting>
 
+    <setting propertyKey="@Properties.includeB" title="@Strings.IncludeBTitle" prompt="@Strings.HeartRatePrompt">
+        <settingConfig type="boolean" />
+    </setting>
+
     <setting propertyKey="@Properties.durationB" title="@Strings.DurationBTitle" prompt="@Strings.DurationPrompt">
         <settingConfig type="numeric" />
     </setting>
@@ -33,6 +37,10 @@
 
     <setting propertyKey="@Properties.heartRateB" title="@Strings.HeartRateBTitle" prompt="@Strings.HeartRatePrompt">
         <settingConfig type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.includeC" title="@Strings.IncludeCTitle" prompt="@Strings.HeartRatePrompt">
+        <settingConfig type="boolean" />
     </setting>
 
     <setting propertyKey="@Properties.durationC" title="@Strings.DurationCTitle" prompt="@Strings.DurationPrompt">

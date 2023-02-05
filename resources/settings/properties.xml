@@ -4,9 +4,11 @@
     <property id="durationA" type="number">45</property>
     <property id="powerA" type="number">150</property>
     <property id="heartRateA" type="number">150</property>
+    <property id="includeB" type="boolean">false</property>
     <property id="durationB" type="number">15</property>
     <property id="powerB" type="number">200</property>
     <property id="heartRateB" type="number">160</property>
+    <property id="includeC" type="boolean">false</property>
     <property id="durationC" type="number">5</property>
     <property id="powerC" type="number">250</property>
     <property id="heartRateC" type="number">170</property>

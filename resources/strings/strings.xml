@@ -10,9 +10,11 @@
     <string id="DurationATitle">Time in zone A</string>
     <string id="PowerATitle">Power target in zone A</string>
     <string id="HeartRateATitle">Heart rate target in zone A</string>
+    <string id="IncludeBTitle">Include a zone B?</string>
     <string id="DurationBTitle">Time in zone B</string>
     <string id="PowerBTitle">Power target in zone B</string>
     <string id="HeartRateBTitle">Heart rate target in zone B</string>
+    <string id="IncludeCTitle">Include a zone C?</string>
     <string id="DurationCTitle">Time in zone C</string>
     <string id="PowerCTitle">Power target in zone C</string>
     <string id="HeartRateCTitle">Heart rate target in zone C</string>
