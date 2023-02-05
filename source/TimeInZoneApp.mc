@@ -3,7 +3,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class TimeInZoneApp extends Application.AppBase {
-    var view as TimeInZoneView;
+    private var view as TimeInZoneView;
 
     function initialize() {
         AppBase.initialize();
