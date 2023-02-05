@@ -8,26 +8,17 @@ class TimeInZoneView extends WatchUi.DataField {
 
     var current = 0;
     var time;
-
-    var isBelowTargetA = true;
-    var isBelowTargetB = true;
-    var isBelowTargetC = true;
-
-    var zoneAMs;
-    var zoneBMs;
-    var zoneCMs;
+    var isBelowTarget = [ true, true, true ];
+    var zoneMs = [ 0, 0, 0 ];
 
     function initialize(settings as Array<ZoneSettings>) {
         DataField.initialize();
         self.settings = settings;
-        onTimerReset();
     }
 
     function onTimerReset() as Void {
         time = null;
-        zoneAMs = 0;
-        zoneBMs = 0;
-        zoneCMs = 0;
+        zoneMs = [ 0, 0, 0 ];
     }
 
     function setSettings(settings as Array<ZoneSettings>) as Void {
@@ -40,9 +31,7 @@ class TimeInZoneView extends WatchUi.DataField {
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Void {
         current = 0;
-        isBelowTargetA = true;
-        isBelowTargetB = true;
-        isBelowTargetC = true;
+        isBelowTarget = [ true, true, true ];
 
         if (info has :currentPower && info.currentPower != null) {
             current = info.currentPower as Number;
@@ -55,16 +44,16 @@ class TimeInZoneView extends WatchUi.DataField {
                     var incrementMs = time - previousTime;
 
                     if (current >= settings[0].power) {
-                        isBelowTargetA = false;
-                        zoneAMs += incrementMs;
+                        isBelowTarget[0] = false;
+                        zoneMs[0] += incrementMs;
                     }
                     if (current >= settings[1].power) {
-                        isBelowTargetB = false;
-                        zoneBMs += incrementMs;
+                        isBelowTarget[1] = false;
+                        zoneMs[1] += incrementMs;
                     }
                     if (current >= settings[2].power) {
-                        isBelowTargetC = false;
-                        zoneCMs += incrementMs;
+                        isBelowTarget[2] = false;
+                        zoneMs[2] += incrementMs;
                     }
                 }
             }
@@ -80,17 +69,17 @@ class TimeInZoneView extends WatchUi.DataField {
         var zoneColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ];
         var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ];
 
-        if (isBelowTargetA) {
+        if (isBelowTarget[0]) {
             zoneColor[0] = Graphics.COLOR_RED;
             foregroundColor[0] = Graphics.COLOR_WHITE;
         }
 
-        if (isBelowTargetB) {
+        if (isBelowTarget[1]) {
             zoneColor[1] = Graphics.COLOR_RED;
             foregroundColor[1] = Graphics.COLOR_WHITE;
         }
 
-        if (isBelowTargetC) {
+        if (isBelowTarget[2]) {
             zoneColor[2] = Graphics.COLOR_RED;
             foregroundColor[2] = Graphics.COLOR_WHITE;
         }
@@ -106,9 +95,9 @@ class TimeInZoneView extends WatchUi.DataField {
         dc.setColor(zoneColor[2], zoneColor[2]);
         dc.fillRectangle(0, height * 2 / 3, width, height / 3);
 
-        var zoneAPercentage = zoneAMs * 100.0 / settings[0].duration / 60.0 / 1000.0;
-        var zoneBPercentage = zoneBMs * 100.0 / settings[1].duration / 60.0 / 1000.0;
-        var zoneCPercentage = zoneCMs * 100.0 / settings[2].duration / 60.0 / 1000.0;
+        var zoneAPercentage = zoneMs[0] * 100.0 / settings[0].duration / 60.0 / 1000.0;
+        var zoneBPercentage = zoneMs[1] * 100.0 / settings[1].duration / 60.0 / 1000.0;
+        var zoneCPercentage = zoneMs[2] * 100.0 / settings[2].duration / 60.0 / 1000.0;
 
         dc.setColor(foregroundColor[0], Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, 0, Graphics.FONT_SMALL,
