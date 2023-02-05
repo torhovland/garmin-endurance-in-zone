@@ -3,15 +3,11 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class TimeInZoneApp extends Application.AppBase {
-    var view;
-    var settingsA;
-    var settingsB;
-    var settingsC;
+    var view as TimeInZoneView;
 
     function initialize() {
         AppBase.initialize();
-        readSettings();
-        view = new TimeInZoneView(settingsA, settingsB, settingsC);
+        view = new TimeInZoneView(readSettings());
     }
 
     // onStart() is called on application start up
@@ -23,27 +19,22 @@ class TimeInZoneApp extends Application.AppBase {
     }
 
     function onSettingsChanged() as Void {
-        readSettings();
-        view.setSettingsA(settingsA);
-        view.setSettingsB(settingsB);
-        view.setSettingsC(settingsC);
+        view.setSettings(readSettings());
     }
 
-    function readSettings() as Void {
-        var type = AppBase.getProperty("type");
-        var durationA = AppBase.getProperty("durationA");
-        var powerA = AppBase.getProperty("powerA");
-        var heartRateA = AppBase.getProperty("heartRateA");
-        var durationB = AppBase.getProperty("durationB");
-        var powerB = AppBase.getProperty("powerB");
-        var heartRateB = AppBase.getProperty("heartRateB");
-        var durationC = AppBase.getProperty("durationC");
-        var powerC = AppBase.getProperty("powerC");
-        var heartRateC = AppBase.getProperty("heartRateC");
+    function readZoneSettings(zone as String) as ZoneSettings {
+        var settings = new ZoneSettings();
+        
+        settings.type = AppBase.getProperty("type");
+        settings.duration = AppBase.getProperty("duration" + zone);
+        settings.power = AppBase.getProperty("power" + zone);
+        settings.heartRate = AppBase.getProperty("heartRate" + zone);
+        
+        return settings;
+    }
 
-        settingsA = new Settings(type, durationA, powerA, heartRateA);
-        settingsB = new Settings(type, durationB, powerB, heartRateB);
-        settingsC = new Settings(type, durationC, powerC, heartRateC);
+    function readSettings() as Array<ZoneSettings> {
+        return [ readZoneSettings("A"), readZoneSettings("B"), readZoneSettings("C") ];
     }
 
     // Return the initial view of your application here

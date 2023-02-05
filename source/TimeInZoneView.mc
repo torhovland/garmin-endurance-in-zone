@@ -8,10 +8,7 @@ var ZoneBColor = Graphics.COLOR_GREEN;
 var ZoneCColor = Graphics.COLOR_GREEN;
 
 class TimeInZoneView extends WatchUi.DataField {
-
-    hidden var settingsA as Settings;
-    hidden var settingsB as Settings;
-    hidden var settingsC as Settings;
+    hidden var settings as Array<ZoneSettings>;
 
     var current = 0;
     var time;
@@ -24,11 +21,9 @@ class TimeInZoneView extends WatchUi.DataField {
     var zoneBMs;
     var zoneCMs;
 
-    function initialize(settingsA, settingsB, settingsC) {
+    function initialize(settings as Array<ZoneSettings>) {
         DataField.initialize();
-        self.settingsA = settingsA;
-        self.settingsB = settingsB;
-        self.settingsC = settingsC;
+        self.settings = settings;
         onTimerReset();
     }
 
@@ -39,16 +34,8 @@ class TimeInZoneView extends WatchUi.DataField {
         zoneCMs = 0;
     }
 
-    function setSettingsA(settings) {
-        self.settingsA = settings;
-    }
-
-    function setSettingsB(settings) {
-        self.settingsB = settings;
-    }
-
-    function setSettingsC(settings) {
-        self.settingsC = settings;
+    function setSettings(settings as Array<ZoneSettings>) as Void {
+        self.settings = settings;
     }
 
     // The given info object contains all the current workout information.
@@ -71,15 +58,15 @@ class TimeInZoneView extends WatchUi.DataField {
                 if (previousTime != null && time > previousTime) {
                     var incrementMs = time - previousTime;
 
-                    if (current >= settingsA.power) {
+                    if (current >= settings[0].power) {
                         isBelowTargetA = false;
                         zoneAMs += incrementMs;
                     }
-                    if (current >= settingsB.power) {
+                    if (current >= settings[1].power) {
                         isBelowTargetB = false;
                         zoneBMs += incrementMs;
                     }
-                    if (current >= settingsC.power) {
+                    if (current >= settings[2].power) {
                         isBelowTargetC = false;
                         zoneCMs += incrementMs;
                     }
@@ -128,23 +115,23 @@ class TimeInZoneView extends WatchUi.DataField {
         dc.setColor(zoneCColor, zoneCColor);
         dc.fillRectangle(0, height * 2 / 3, width, height / 3);
 
-        var zoneAPercentage = zoneAMs * 100.0 / settingsA.duration / 60.0 / 1000.0;
-        var zoneBPercentage = zoneBMs * 100.0 / settingsB.duration / 60.0 / 1000.0;
-        var zoneCPercentage = zoneCMs * 100.0 / settingsC.duration / 60.0 / 1000.0;
+        var zoneAPercentage = zoneAMs * 100.0 / settings[0].duration / 60.0 / 1000.0;
+        var zoneBPercentage = zoneBMs * 100.0 / settings[1].duration / 60.0 / 1000.0;
+        var zoneCPercentage = zoneCMs * 100.0 / settings[2].duration / 60.0 / 1000.0;
 
         dc.setColor(foregroundColorA, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, 0, Graphics.FONT_SMALL,
-            settingsA.duration + "m > " + settingsA.power + "W: " + zoneAPercentage.format("%.1f") + "%",
+            settings[0].duration + "m > " + settings[0].power + "W: " + zoneAPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorB, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height / 3, Graphics.FONT_SMALL,
-            settingsB.duration + "m > " + settingsB.power + "W: " + zoneBPercentage.format("%.1f") + "%",
+            settings[1].duration + "m > " + settings[1].power + "W: " + zoneBPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.setColor(foregroundColorC, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 2 / 3, Graphics.FONT_SMALL,
-            settingsC.duration + "m > " + settingsC.power + "W: " + zoneCPercentage.format("%.1f") + "%",
+            settings[2].duration + "m > " + settings[2].power + "W: " + zoneCPercentage.format("%.1f") + "%",
             Graphics.TEXT_JUSTIFY_CENTER);
     }
 
