@@ -19,28 +19,14 @@ class TimeInZoneView extends WatchUi.DataField {
         self.settings = settings;
     }
 
-    public function onTimerReset() as Void {
-        readings = new Array<Number>[NumberOfReadings];
-        zoneMs = new Array<Number>[MaxNumberOfZones];
-        time = null;
-    }
-
     public function setSettings(settings as Array<ZoneSettings>) as Void {
         self.settings = settings;
     }
 
-    private function calculateAverage() as Float {
-        var sum = 0;
-
-        for (var i=0; i<NumberOfReadings; i++) {
-            var reading = readings[i];
-
-            if (reading != null) {
-                sum += reading;
-            }
-        }
-
-        return sum / NumberOfReadings.toFloat();
+    public function onTimerReset() as Void {
+        readings = new Array<Number>[NumberOfReadings];
+        zoneMs = new Array<Number>[MaxNumberOfZones];
+        time = null;
     }
 
     public function compute(info as Activity.Info) as Void {
@@ -111,5 +97,19 @@ class TimeInZoneView extends WatchUi.DataField {
                 settings[zone].duration + "m > " + settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "% (" + readings[readingIndex] + ":" + average.format("%.1f") ,
                 Graphics.TEXT_JUSTIFY_CENTER);
         }
+    }
+
+    private function calculateAverage() as Float {
+        var sum = 0;
+
+        for (var i=0; i<NumberOfReadings; i++) {
+            var reading = readings[i];
+
+            if (reading != null) {
+                sum += reading;
+            }
+        }
+
+        return sum / NumberOfReadings.toFloat();
     }
 }

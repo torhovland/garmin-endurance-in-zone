@@ -10,8 +10,16 @@ class TimeInZoneApp extends Application.AppBase {
         view = new TimeInZoneView(readSettings());
     }
 
+    public function getInitialView() as Array<Views or InputDelegates>? {
+        return [ view ] as Array<Views or InputDelegates>;
+    }
+
     public function onSettingsChanged() as Void {
         view.setSettings(readSettings());
+    }
+
+    private function readSettings() as Array<ZoneSettings> {
+        return [ readZoneSettings("A"), readZoneSettings("B"), readZoneSettings("C") ];
     }
 
     private function readZoneSettings(zone as String) as ZoneSettings {
@@ -24,15 +32,6 @@ class TimeInZoneApp extends Application.AppBase {
         
         return settings;
     }
-
-    private function readSettings() as Array<ZoneSettings> {
-        return [ readZoneSettings("A"), readZoneSettings("B"), readZoneSettings("C") ];
-    }
-
-    public function getInitialView() as Array<Views or InputDelegates>? {
-        return [ view ] as Array<Views or InputDelegates>;
-    }
-
 }
 
 function getApp() as TimeInZoneApp {
