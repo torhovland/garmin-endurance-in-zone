@@ -11,7 +11,7 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [x] Use 30 second average rather than current power.
 - [x] Show 1-3 zones properly, as configured.
 - [x] Display properly on various data field sizes, truncating where needed.
-- [ ] Use the largest font that will fit.
+- [x] Use the largest font that will fit.
 - [ ] Use heart rate instead of power.
 - [ ] Use light/dark red/green to achieve a progress look.
 - [ ] Test on all devices using simulator.

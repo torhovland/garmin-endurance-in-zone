@@ -14,7 +14,9 @@ class TimeInZoneView extends WatchUi.DataField {
     private var zoneMs as Array<Number> = new Array<Number>[MaxNumberOfZones];
     private var readingIndex as Number = 0;
     private var time as Number?;
-    private var font as FontDefinition = Graphics.FONT_SMALL;
+    private var font as FontDefinition = Graphics.FONT_LARGE;
+    private var label = "";
+    private var textDimensions as Array<Number> = new Array<Number>[2];
 
     public function initialize(settings as Array<ZoneSettings>) {
         DataField.initialize();
@@ -85,16 +87,6 @@ class TimeInZoneView extends WatchUi.DataField {
         var zonePercentage = new Array<Float>[MaxNumberOfZones];
         var average = calculateAverage();
         var zoneGuiSlot = 0;
-        var truncate = false;
-        var label = "";
-
-        var textDimensions = dc.getTextDimensions("999m > 999W: 999.9%", font);
-
-        if (textDimensions[0] > width) {
-            truncate = true;
-        }
-
-        var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);            
         dc.clear();
@@ -117,17 +109,16 @@ class TimeInZoneView extends WatchUi.DataField {
                 zonePercentage[zone] = ms * 100.0 / settings[zone].duration / 60.0 / 1000.0;
             }
 
-            if (truncate) {
-                label = settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "%";
-            } else {
-                label = settings[zone].duration + "m > " + settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "%";
-            }
+            var zoneGuiHeight = Math.round(height / numberOfZones.toFloat()).toNumber();
+
+            fitText(dc, width, zoneGuiHeight, settings[zone], zonePercentage[zone]);
+            var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
 
             dc.setColor(zoneColor[zone], zoneColor[zone]);
             dc.fillRectangle(0, height * zoneGuiSlot / numberOfZones, width, height / numberOfZones);
 
             dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);            
-            dc.drawText(width / 2, height * zoneGuiSlot / numberOfZones + (verticalOffset as Number), font,
+            dc.drawText(width / 2, zoneGuiHeight * zoneGuiSlot + (verticalOffset as Number), font,
                 label, Graphics.TEXT_JUSTIFY_CENTER);
 
             zoneGuiSlot++;
@@ -158,5 +149,49 @@ class TimeInZoneView extends WatchUi.DataField {
         }
 
         return sum;
+    }
+
+    private function fitText(dc as Dc, width as Number, height as Number, settings as ZoneSettings, percentage as Float) as Void {
+        var fonts = [ Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_XTINY ];
+        var durationText = settings.duration + "m >";
+        var powerText = settings.power + "W:";
+        var percentageText = percentage.format("%.1f") + "%";
+
+        for (var i=0; i<fonts.size(); i++) {
+            font = fonts[i];
+
+            label = durationText + " " + powerText + " " + percentageText;
+            textDimensions = dc.getTextDimensions(label, font);
+            
+            if (textDimensions[0] > width) {
+                label = durationText + " " + powerText + "\n" + percentageText;
+                textDimensions = dc.getTextDimensions(label, font);
+
+                if (textDimensions[0] > width) {
+                    label = durationText + "\n" + powerText + "\n" + percentageText;
+                    textDimensions = dc.getTextDimensions(label, font);
+                }
+            }
+
+            if (textDimensions[0] <= width && textDimensions[1] <= height) {
+                return;
+            }
+        }
+
+        for (var i=0; i<fonts.size(); i++) {
+            font = fonts[i];
+
+            label = powerText + " " + percentageText;
+            textDimensions = dc.getTextDimensions(label, font);
+            
+            if (textDimensions[0] > width) {
+                label = powerText + "\n" + percentageText;
+                textDimensions = dc.getTextDimensions(label, font);
+            }
+
+            if (textDimensions[0] <= width && textDimensions[1] <= height) {
+                return;
+            }
+        }
     }
 }
