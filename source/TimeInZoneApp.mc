@@ -5,16 +5,16 @@ import Toybox.WatchUi;
 class TimeInZoneApp extends Application.AppBase {
     private var view as TimeInZoneView;
 
-    function initialize() {
+    public function initialize() {
         AppBase.initialize();
         view = new TimeInZoneView(readSettings());
     }
 
-    function onSettingsChanged() as Void {
+    public function onSettingsChanged() as Void {
         view.setSettings(readSettings());
     }
 
-    function readZoneSettings(zone as String) as ZoneSettings {
+    private function readZoneSettings(zone as String) as ZoneSettings {
         var settings = new ZoneSettings();
         
         settings.type = AppBase.getProperty("type");
@@ -25,11 +25,11 @@ class TimeInZoneApp extends Application.AppBase {
         return settings;
     }
 
-    function readSettings() as Array<ZoneSettings> {
+    private function readSettings() as Array<ZoneSettings> {
         return [ readZoneSettings("A"), readZoneSettings("B"), readZoneSettings("C") ];
     }
 
-    function getInitialView() as Array<Views or InputDelegates>? {
+    public function getInitialView() as Array<Views or InputDelegates>? {
         return [ view ] as Array<Views or InputDelegates>;
     }
 
