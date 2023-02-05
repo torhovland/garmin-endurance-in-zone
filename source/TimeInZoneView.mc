@@ -46,20 +46,24 @@ class TimeInZoneView extends WatchUi.DataField {
                 var previousTime = time;
                 time = info.timerTime;
 
-                if (previousTime != null && time > previousTime) {
-                    var incrementMs = time - previousTime;
-                    var average = calculateAverage();
+                if (previousTime == null || time <= previousTime) {
+                    return;
+                }
 
-                    for (var zone=0; zone<MaxNumberOfZones; zone++) {
-                        if (average >= settings[zone].power) {
-                            isBelowTarget[zone] = false;
+                var incrementMs = time - previousTime;
+                var average = calculateAverage();
 
-                            if (zoneMs[zone] == null) {
-                                zoneMs[zone] = incrementMs;
-                            } else {
-                                zoneMs[zone] += incrementMs;
-                            }
-                        }
+                for (var zone=0; zone<MaxNumberOfZones; zone++) {                    
+                    if (average < settings[zone].power) {
+                        continue;
+                    }
+
+                    isBelowTarget[zone] = false;
+
+                    if (zoneMs[zone] == null) {
+                        zoneMs[zone] = incrementMs;
+                    } else {
+                        zoneMs[zone] += incrementMs;
                     }
                 }
             }
