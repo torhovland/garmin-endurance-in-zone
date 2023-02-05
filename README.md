@@ -9,7 +9,7 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [x] Show three independent zones concurrently.
 - [x] Reset data when activity ends.
 - [x] Use 30 second average rather than current power.
-- [ ] Show 1-3 zones properly, as configured.
+- [x] Show 1-3 zones properly, as configured.
 - [ ] Display properly on various data field sizes.
 - [ ] Use heart rate instead of power.
 - [ ] Test on all devices using simulator.

@@ -8,6 +8,7 @@ class TimeInZoneView extends WatchUi.DataField {
     private const NumberOfReadings = 30;
 
     private var settings as Array<ZoneSettings>;
+    private var numberOfZones as Number = MaxNumberOfZones;
     private var readings as Array<Number> = new Array<Number>[NumberOfReadings];
     private var isBelowTarget as Array<Boolean> = new Array<Boolean>[MaxNumberOfZones];
     private var zoneMs as Array<Number> = new Array<Number>[MaxNumberOfZones];
@@ -17,10 +18,12 @@ class TimeInZoneView extends WatchUi.DataField {
     public function initialize(settings as Array<ZoneSettings>) {
         DataField.initialize();
         self.settings = settings;
+        self.numberOfZones = countNumberOfZones();
     }
 
     public function setSettings(settings as Array<ZoneSettings>) as Void {
         self.settings = settings;
+        self.numberOfZones = countNumberOfZones();
     }
 
     public function onTimerReset() as Void {
@@ -53,7 +56,11 @@ class TimeInZoneView extends WatchUi.DataField {
                 var incrementMs = (time as Number) - (previousTime as Number);
                 var average = calculateAverage();
 
-                for (var zone=0; zone<MaxNumberOfZones; zone++) {                    
+                for (var zone=0; zone<MaxNumberOfZones; zone++) {   
+                    if (!settings[zone].include) {
+                        continue;
+                    }            
+
                     if (average < settings[zone].power) {
                         continue;
                     }
@@ -78,8 +85,13 @@ class TimeInZoneView extends WatchUi.DataField {
         var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ] as Array<ColorValue>;
         var zonePercentage = new Array<Float>[MaxNumberOfZones];
         var average = calculateAverage();
+        var zoneGuiSlot = 0;
 
-        for (var zone=0; zone<MaxNumberOfZones; zone++) {
+        for (var zone=0; zone<MaxNumberOfZones; zone++) {            
+            if (!settings[zone].include) {
+                continue;
+            }            
+                    
             if (isBelowTarget[zone]) {
                 zoneColor[zone] = Graphics.COLOR_RED;
                 foregroundColor[zone] = Graphics.COLOR_WHITE;
@@ -94,12 +106,14 @@ class TimeInZoneView extends WatchUi.DataField {
             }
 
             dc.setColor(zoneColor[zone], zoneColor[zone]);
-            dc.fillRectangle(0, height * zone / MaxNumberOfZones, width, height / MaxNumberOfZones);
+            dc.fillRectangle(0, height * zoneGuiSlot / numberOfZones, width, height / numberOfZones);
 
             dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);
-            dc.drawText(width / 2, height * zone / MaxNumberOfZones, Graphics.FONT_SMALL,
+            dc.drawText(width / 2, height * zoneGuiSlot / numberOfZones, Graphics.FONT_SMALL,
                 settings[zone].duration + "m > " + settings[zone].power + "W: " + zonePercentage[zone].format("%.1f") + "% (" + readings[readingIndex] + ":" + average.format("%.1f") ,
                 Graphics.TEXT_JUSTIFY_CENTER);
+
+            zoneGuiSlot++;
         }
     }
 
@@ -115,5 +129,17 @@ class TimeInZoneView extends WatchUi.DataField {
         }
 
         return sum / NumberOfReadings.toFloat();
+    }
+
+    private function countNumberOfZones() as Number {
+        var sum = 0;
+
+        for (var zone=0; zone<MaxNumberOfZones; zone++) {
+            if (settings[zone].include) {
+                sum++;
+            }
+        }
+
+        return sum;
     }
 }

@@ -1,5 +1,6 @@
 import Toybox.Application;
 import Toybox.Lang;
+import Toybox.System;
 import Toybox.WatchUi;
 
 class TimeInZoneApp extends Application.AppBase {
@@ -30,11 +31,11 @@ class TimeInZoneApp extends Application.AppBase {
         settings.duration = AppBase.getProperty("duration" + zone) as Number;
         settings.power = AppBase.getProperty("power" + zone) as Number;
         settings.heartRate = AppBase.getProperty("heartRate" + zone) as Number;
-
-        if (zone != "A") {
+        
+        if (!zone.equals("A")) {
             settings.include = AppBase.getProperty("include" + zone) as Boolean;
         }
-        
+
         return settings;
     }
 }
