@@ -93,7 +93,8 @@ class TimeInZoneView extends WatchUi.DataField {
     public function onUpdate(dc as Dc) as Void {
         var width = dc.getWidth();
         var height = dc.getHeight();
-        var zoneColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ] as Array<ColorValue>;
+        var zoneProgressColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ] as Array<ColorValue>;
+        var zoneRemainingColor = [ Graphics.COLOR_DK_GREEN, Graphics.COLOR_DK_GREEN, Graphics.COLOR_DK_GREEN ] as Array<ColorValue>;
         var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ] as Array<ColorValue>;
         var zonePercentage = new Array<Float>[MaxNumberOfZones];
         var average = calculateAverage();
@@ -108,7 +109,8 @@ class TimeInZoneView extends WatchUi.DataField {
             }            
                     
             if (isBelowTarget[zone]) {
-                zoneColor[zone] = Graphics.COLOR_RED;
+                zoneProgressColor[zone] = Graphics.COLOR_RED;
+                zoneRemainingColor[zone] = Graphics.COLOR_DK_RED;
                 foregroundColor[zone] = Graphics.COLOR_WHITE;
             }
 
@@ -125,8 +127,19 @@ class TimeInZoneView extends WatchUi.DataField {
             fitText(dc, width, zoneGuiHeight, settings[zone], zonePercentage[zone]);
             var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
 
-            dc.setColor(zoneColor[zone], zoneColor[zone]);
-            dc.fillRectangle(0, height * zoneGuiSlot / numberOfZones, width, height / numberOfZones);
+            var progressWidth = zonePercentage[zone] / 100 * width;
+            
+            if (progressWidth > width) {
+                progressWidth = width;
+            }
+
+            dc.setColor(zoneProgressColor[zone], zoneProgressColor[zone]);
+            dc.fillRectangle(0, height * zoneGuiSlot / numberOfZones, progressWidth, height / numberOfZones);
+
+            if (progressWidth < width) {            
+                dc.setColor(zoneRemainingColor[zone], zoneRemainingColor[zone]);
+                dc.fillRectangle(progressWidth, height * zoneGuiSlot / numberOfZones, width - progressWidth, height / numberOfZones);
+            }
 
             dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);            
             dc.drawText(width / 2, zoneGuiHeight * zoneGuiSlot + (verticalOffset as Number), font,
