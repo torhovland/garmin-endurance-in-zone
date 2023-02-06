@@ -19,4 +19,5 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [ ] Update docs.
 - [ ] Update images.
 - [ ] Refactor code.
+- [ ] Colour-blind support (configurable colours).
 - [ ] Publish first version.
