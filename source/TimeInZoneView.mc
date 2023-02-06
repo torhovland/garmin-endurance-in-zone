@@ -15,7 +15,7 @@ class TimeInZoneView extends WatchUi.DataField {
     private var readingIndex as Number = 0;
     private var time as Number?;
     private var font as FontDefinition = Graphics.FONT_LARGE;
-    private var label = "";
+    private var label as String = "";
     private var textDimensions as Array<Number> = new Array<Number>[2];
 
     public function initialize(settings as Array<ZoneSettings>) {
@@ -26,6 +26,7 @@ class TimeInZoneView extends WatchUi.DataField {
 
     public function setSettings(settings as Array<ZoneSettings>) as Void {
         initialize(settings);
+        onTimerReset();
     }
 
     public function onTimerReset() as Void {
@@ -44,36 +45,46 @@ class TimeInZoneView extends WatchUi.DataField {
         readings[readingIndex] = 0;
         isBelowTarget = [ true, true, true ] as Array<Boolean>;
 
-        if (info has :currentPower && info.currentPower != null) {
+        if (settings[0].type == 0 && info has :currentPower && info.currentPower != null) {
             readings[readingIndex] = info.currentPower as Number;
+            System.println("Reading: " + readings[readingIndex] + "W");
+        } else if (settings[0].type == 1 && info has :currentHeartRate && info.currentHeartRate != null) {
+            readings[readingIndex] = info.currentHeartRate as Number;
+            System.println("Reading: " + readings[readingIndex] + " bpm");
+        } else {
+            return;
+        }
 
-            if (info has :timerTime && info.timerTime != null) {
-                var previousTime = time;
-                time = info.timerTime;
+        if (info has :timerTime && info.timerTime != null) {
+            var previousTime = time;
+            time = info.timerTime;
 
-                if (previousTime == null || time == null || time <= previousTime) {
-                    return;
+            if (previousTime == null || time == null || time <= previousTime) {
+                return;
+            }
+
+            var incrementMs = (time as Number) - (previousTime as Number);
+            var average = calculateAverage();
+
+            for (var zone=0; zone<MaxNumberOfZones; zone++) {   
+                if (!settings[zone].include) {
+                    continue;
+                }            
+
+                if (settings[zone].type == 0 && average < settings[zone].power) {
+                    continue;
                 }
 
-                var incrementMs = (time as Number) - (previousTime as Number);
-                var average = calculateAverage();
+                if (settings[zone].type == 1 && average < settings[zone].heartRate) {
+                    continue;
+                }
 
-                for (var zone=0; zone<MaxNumberOfZones; zone++) {   
-                    if (!settings[zone].include) {
-                        continue;
-                    }            
+                isBelowTarget[zone] = false;
 
-                    if (average < settings[zone].power) {
-                        continue;
-                    }
-
-                    isBelowTarget[zone] = false;
-
-                    if (zoneMs[zone] == null) {
-                        zoneMs[zone] = incrementMs;
-                    } else {
-                        zoneMs[zone] += incrementMs;
-                    }
+                if (zoneMs[zone] == null) {
+                    zoneMs[zone] = incrementMs;
+                } else {
+                    zoneMs[zone] += incrementMs;
                 }
             }
         }
@@ -152,23 +163,27 @@ class TimeInZoneView extends WatchUi.DataField {
     }
 
     private function fitText(dc as Dc, width as Number, height as Number, settings as ZoneSettings, percentage as Float) as Void {
-        var fonts = [ Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_XTINY ];
+        var fonts = [ Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_XTINY ] as Array<FontDefinition>;
         var durationText = settings.duration + "m >";
-        var powerText = settings.power + "W:";
         var percentageText = percentage.format("%.1f") + "%";
+        var targetText = settings.power + "W:";
+
+        if (settings.type == 1) {
+            targetText = settings.heartRate + " bpm:";
+        }
 
         for (var i=0; i<fonts.size(); i++) {
             font = fonts[i];
 
-            label = durationText + " " + powerText + " " + percentageText;
+            label = durationText + " " + targetText + " " + percentageText;
             textDimensions = dc.getTextDimensions(label, font);
             
             if (textDimensions[0] > width) {
-                label = durationText + " " + powerText + "\n" + percentageText;
+                label = durationText + " " + targetText + "\n" + percentageText;
                 textDimensions = dc.getTextDimensions(label, font);
 
                 if (textDimensions[0] > width) {
-                    label = durationText + "\n" + powerText + "\n" + percentageText;
+                    label = durationText + "\n" + targetText + "\n" + percentageText;
                     textDimensions = dc.getTextDimensions(label, font);
                 }
             }
@@ -181,11 +196,11 @@ class TimeInZoneView extends WatchUi.DataField {
         for (var i=0; i<fonts.size(); i++) {
             font = fonts[i];
 
-            label = powerText + " " + percentageText;
+            label = targetText + " " + percentageText;
             textDimensions = dc.getTextDimensions(label, font);
             
             if (textDimensions[0] > width) {
-                label = powerText + "\n" + percentageText;
+                label = targetText + "\n" + percentageText;
                 textDimensions = dc.getTextDimensions(label, font);
             }
 
