@@ -4,7 +4,7 @@
         Use "Monkey C: Edit Application" from the Visual Studio Code command palette
         to update the application attributes.
     -->
-    <iq:application id="dd675ec6-0a50-407d-8046-57113e9103ab" type="datafield" name="@Strings.AppName" entry="TimeInZoneApp" launcherIcon="@Drawables.LauncherIcon" minApiLevel="1.3.0">
+    <iq:application id="dd675ec6-0a50-407d-8046-57113e9103ab" type="datafield" name="@Strings.AppName" entry="TimeInZoneApp" launcherIcon="@Drawables.LauncherIcon" minApiLevel="1.3.1">
 
         <!--
             Use the following from the Visual Studio Code comand palette to edit
