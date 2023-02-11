@@ -135,8 +135,8 @@ class TimeInZoneView extends WatchUi.DataField {
             var zoneGuiHeight = Math.round(height / numberOfZones.toFloat()).toNumber();
 
             var isFirstZone = zone == 0;
-            var isLastZone = zone == MaxNumberOfZones - 1;
-            fitText(dc, width, zoneGuiHeight, settings[zone], zonePercentage[zone], obscurity, isFirstZone, isLastZone);
+            var isLastZone = isLastZone(zone);
+            fitText(dc, width, zoneGuiHeight, settings[zone], average, zonePercentage[zone], obscurity, isFirstZone, isLastZone);
             var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
 
             var progressWidth = zonePercentage[zone] / 100 * width;
@@ -161,7 +161,7 @@ class TimeInZoneView extends WatchUi.DataField {
         }
     }
 
-    private function calculateAverage() as Float {
+    private function calculateAverage() as Number {
         var sum = 0;
 
         for (var i=0; i<NumberOfReadings; i++) {
@@ -172,7 +172,7 @@ class TimeInZoneView extends WatchUi.DataField {
             }
         }
 
-        return sum / NumberOfReadings.toFloat();
+        return Math.round(sum / NumberOfReadings.toFloat()).toNumber();
     }
 
     private function countNumberOfZones() as Number {
@@ -187,85 +187,106 @@ class TimeInZoneView extends WatchUi.DataField {
         return sum;
     }
 
-    private function fitText(dc as Dc, width as Number, height as Number, settings as ZoneSettings, percentage as Float, obscurity as DataField.Obscurity, isFirstZone as Boolean, isLastZone as Boolean) as Void {
-        var fonts = [ Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_XTINY ] as Array<FontDefinition>;
+    private function isLastZone(i as Number) as Boolean {
+        for (var zone=MaxNumberOfZones-1; zone>=0; zone--) {
+            if (settings[zone].include) {
+                return zone == i;
+            }
+        }
+
+        return false;
+    }
+
+    private function fitText(dc as Dc, width as Number, height as Number, settings as ZoneSettings, average as Number, percentage as Float, obscurity as DataField.Obscurity, isFirstZone as Boolean, isLastZone as Boolean) as Void {
         var durationText = settings.duration + "m >";
         var percentageText = percentage.format("%.1f") + "%";
-        var targetText = settings.power + "W:";
+        var targetText = settings.power + "W (" + average + "):";
+
+        if (settings.type == 1) {
+            targetText = settings.heartRate + " bpm (" + average + "):";
+        }
+
+        System.println("First zone: " + isFirstZone + ". Last zone: " + isLastZone + ". Obscurity is " + obscurity + ". OBSCURE_TOP is " + OBSCURE_TOP + ". OBSCURE_BOTTOM is " + OBSCURE_BOTTOM + ".");
+
+        if ((obscurity & OBSCURE_TOP) > 0 && (obscurity & OBSCURE_BOTTOM) > 0) {
+            // Data field coveraging full height. Don't reduce.
+        }
+        else if (isFirstZone && (obscurity & OBSCURE_TOP) > 0) {
+            System.println("First zone.");
+            width = (width / 2.5).toNumber();
+        } else if (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0) {
+            System.println("Last zone.");
+            width = (width / 2.5).toNumber();
+        } else if (!isFirstZone && !isLastZone && ((obscurity & OBSCURE_TOP) > 0 || (obscurity & OBSCURE_BOTTOM) > 0)) {
+            System.println("Middle zone.");
+            width = (width / 1.5).toNumber();
+        }
+
+        // Try to fit "999m > 999W (123): 100.0%".
+        if (fitDurationTargetPercentageText(dc, width, height, durationText, targetText, percentageText)) {
+            return;
+        }
+
+        // Try to fit "999m > 999W: 100.0%".
+        targetText = settings.power + "W:";
 
         if (settings.type == 1) {
             targetText = settings.heartRate + " bpm:";
         }
 
-        if (isFirstZone && (obscurity & OBSCURE_TOP) > 0) {
-            width /= 2.5;
+        if (fitDurationTargetPercentageText(dc, width, height, durationText, targetText, percentageText)) {
+            return;
         }
 
-        if (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0) {
-            width /= 2.5;
+        // Try to fit "999W: 100.0%".
+        if (fitDurationTargetPercentageText(dc, width, height, null, targetText, percentageText)) {
+            return;
         }
 
-        if (!isFirstZone && !isLastZone && ((obscurity & OBSCURE_TOP) > 0 || (obscurity & OBSCURE_BOTTOM) > 0)) {
-            width /= 1.5;
-        }        
-
-        for (var i=0; i<fonts.size(); i++) {
-            font = fonts[i];
-
-            label = durationText + " " + targetText + " " + percentageText;
-            textDimensions = dc.getTextDimensions(label, font);
-            
-            if (textDimensions[0] > width) {
-                label = durationText + " " + targetText + "\n" + percentageText;
-                textDimensions = dc.getTextDimensions(label, font);
-
-                if (textDimensions[0] > width) {
-                    label = durationText + "\n" + targetText + "\n" + percentageText;
-                    textDimensions = dc.getTextDimensions(label, font);
-                }
-            }
-
-            if (textDimensions[0] <= width && textDimensions[1] <= height) {
-                return;
-            }
-        }
-
-        for (var i=0; i<fonts.size(); i++) {
-            font = fonts[i];
-
-            label = targetText + " " + percentageText;
-            textDimensions = dc.getTextDimensions(label, font);
-            
-            if (textDimensions[0] > width) {
-                label = targetText + "\n" + percentageText;
-                textDimensions = dc.getTextDimensions(label, font);
-            }
-
-            if (textDimensions[0] <= width && textDimensions[1] <= height) {
-                return;
-            }
-        }
-
+        // Try to fit "999: 100.0%".
         targetText = settings.power + ":";
 
         if (settings.type == 1) {
             targetText = settings.heartRate + ":";
         }
 
+        fitDurationTargetPercentageText(dc, width, height, null, targetText, percentageText);
+    }
+    
+    private function fitDurationTargetPercentageText(dc as Dc, width as Number, height as Number, durationText as String?, targetText as String, percentageText as String) as Boolean {
+        var fonts = [ Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_XTINY ] as Array<FontDefinition>;
+
         for (var i=0; i<fonts.size(); i++) {
             font = fonts[i];
 
-            label = targetText + " " + percentageText;
+            if (durationText != null) {
+                label = durationText + " " + targetText + " " + percentageText;
+            } else {
+                label = targetText + " " + percentageText;
+            }
+
             textDimensions = dc.getTextDimensions(label, font);
             
             if (textDimensions[0] > width) {
-                label = targetText + "\n" + percentageText;
-                textDimensions = dc.getTextDimensions(label, font);
+                if (durationText != null) {
+                    label = durationText + " " + targetText + "\n" + percentageText;
+                    textDimensions = dc.getTextDimensions(label, font);
+
+                    if (textDimensions[0] > width) {
+                        label = durationText + "\n" + targetText + "\n" + percentageText;
+                        textDimensions = dc.getTextDimensions(label, font);
+                    }
+                } else {
+                    label = targetText + "\n" + percentageText;
+                    textDimensions = dc.getTextDimensions(label, font);
+                }
             }
 
             if (textDimensions[0] <= width && textDimensions[1] <= height) {
-                return;
+                return true;
             }
         }
+
+        return false;
     }
 }
