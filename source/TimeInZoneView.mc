@@ -29,6 +29,18 @@ class TimeInZoneView extends WatchUi.DataField {
         onTimerReset();
     }
 
+    public function getState() as Array<Number> {
+        return zoneMs;
+    }
+
+    public function setState(zoneMs as Array<Number>) as Void {
+        if (zoneMs == null) {
+            self.zoneMs = new Array<Number>[MaxNumberOfZones];
+        } else {
+            self.zoneMs = zoneMs;
+        }
+    }
+
     public function onTimerReset() as Void {
         readings = new Array<Number>[NumberOfReadings];
         zoneMs = new Array<Number>[MaxNumberOfZones];
@@ -47,10 +59,8 @@ class TimeInZoneView extends WatchUi.DataField {
 
         if (settings[0].type == 0 && info has :currentPower && info.currentPower != null) {
             readings[readingIndex] = info.currentPower as Number;
-            System.println("Reading: " + readings[readingIndex] + "W");
         } else if (settings[0].type == 1 && info has :currentHeartRate && info.currentHeartRate != null) {
             readings[readingIndex] = info.currentHeartRate as Number;
-            System.println("Reading: " + readings[readingIndex] + " bpm");
         } else {
             return;
         }
@@ -65,6 +75,7 @@ class TimeInZoneView extends WatchUi.DataField {
 
             var incrementMs = (time as Number) - (previousTime as Number);
             var average = calculateAverage();
+            System.println("Reading: " + readings[readingIndex] + ". Average: " + average);
 
             for (var zone=0; zone<MaxNumberOfZones; zone++) {   
                 if (!settings[zone].include) {
