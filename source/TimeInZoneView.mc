@@ -95,10 +95,10 @@ class TimeInZoneView extends WatchUi.DataField {
         var height = dc.getHeight();
         var zoneProgressColor = [ Graphics.COLOR_GREEN, Graphics.COLOR_GREEN, Graphics.COLOR_GREEN ] as Array<ColorValue>;
         var zoneRemainingColor = [ Graphics.COLOR_DK_GREEN, Graphics.COLOR_DK_GREEN, Graphics.COLOR_DK_GREEN ] as Array<ColorValue>;
-        var foregroundColor = [ Graphics.COLOR_BLACK, Graphics.COLOR_BLACK, Graphics.COLOR_BLACK ] as Array<ColorValue>;
         var zonePercentage = new Array<Float>[MaxNumberOfZones];
         var average = calculateAverage();
         var zoneGuiSlot = 0;
+        var obscurity = DataField.getObscurityFlags();
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);            
         dc.clear();
@@ -111,7 +111,6 @@ class TimeInZoneView extends WatchUi.DataField {
             if (isBelowTarget[zone]) {
                 zoneProgressColor[zone] = Graphics.COLOR_RED;
                 zoneRemainingColor[zone] = Graphics.COLOR_DK_RED;
-                foregroundColor[zone] = Graphics.COLOR_WHITE;
             }
 
             var ms = zoneMs[zone];
@@ -124,7 +123,9 @@ class TimeInZoneView extends WatchUi.DataField {
 
             var zoneGuiHeight = Math.round(height / numberOfZones.toFloat()).toNumber();
 
-            fitText(dc, width, zoneGuiHeight, settings[zone], zonePercentage[zone]);
+            var isFirstZone = zone == 0;
+            var isLastZone = zone == MaxNumberOfZones - 1;
+            fitText(dc, width, zoneGuiHeight, settings[zone], zonePercentage[zone], obscurity, isFirstZone, isLastZone);
             var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
 
             var progressWidth = zonePercentage[zone] / 100 * width;
@@ -141,7 +142,7 @@ class TimeInZoneView extends WatchUi.DataField {
                 dc.fillRectangle(progressWidth, height * zoneGuiSlot / numberOfZones, width - progressWidth, height / numberOfZones);
             }
 
-            dc.setColor(foregroundColor[zone], Graphics.COLOR_TRANSPARENT);            
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);            
             dc.drawText(width / 2, zoneGuiHeight * zoneGuiSlot + (verticalOffset as Number), font,
                 label, Graphics.TEXT_JUSTIFY_CENTER);
 
@@ -175,7 +176,7 @@ class TimeInZoneView extends WatchUi.DataField {
         return sum;
     }
 
-    private function fitText(dc as Dc, width as Number, height as Number, settings as ZoneSettings, percentage as Float) as Void {
+    private function fitText(dc as Dc, width as Number, height as Number, settings as ZoneSettings, percentage as Float, obscurity as DataField.Obscurity, isFirstZone as Boolean, isLastZone as Boolean) as Void {
         var fonts = [ Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_XTINY ] as Array<FontDefinition>;
         var durationText = settings.duration + "m >";
         var percentageText = percentage.format("%.1f") + "%";
@@ -184,6 +185,18 @@ class TimeInZoneView extends WatchUi.DataField {
         if (settings.type == 1) {
             targetText = settings.heartRate + " bpm:";
         }
+
+        if (isFirstZone && (obscurity & OBSCURE_TOP) > 0) {
+            width /= 2.5;
+        }
+
+        if (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0) {
+            width /= 2.5;
+        }
+
+        if (!isFirstZone && !isLastZone && ((obscurity & OBSCURE_TOP) > 0 || (obscurity & OBSCURE_BOTTOM) > 0)) {
+            width /= 1.5;
+        }        
 
         for (var i=0; i<fonts.size(); i++) {
             font = fonts[i];
@@ -204,6 +217,28 @@ class TimeInZoneView extends WatchUi.DataField {
             if (textDimensions[0] <= width && textDimensions[1] <= height) {
                 return;
             }
+        }
+
+        for (var i=0; i<fonts.size(); i++) {
+            font = fonts[i];
+
+            label = targetText + " " + percentageText;
+            textDimensions = dc.getTextDimensions(label, font);
+            
+            if (textDimensions[0] > width) {
+                label = targetText + "\n" + percentageText;
+                textDimensions = dc.getTextDimensions(label, font);
+            }
+
+            if (textDimensions[0] <= width && textDimensions[1] <= height) {
+                return;
+            }
+        }
+
+        targetText = settings.power + ":";
+
+        if (settings.type == 1) {
+            targetText = settings.heartRate + ":";
         }
 
         for (var i=0; i<fonts.size(); i++) {
