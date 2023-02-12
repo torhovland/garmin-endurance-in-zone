@@ -3,7 +3,7 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 
 # Demo
 
-![Garmin Forerunner 945](images/forerunner.mov)
+![Garmin Forerunner 945](images/forerunner.gif)
 ![Garmin MARQ Adventurer](images/marq.png)
 
 # TODO
