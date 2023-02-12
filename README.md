@@ -1,6 +1,10 @@
 # Endurance in Zone
 A Garmin IQ Data Field that can show time within a zone as a percentage of a target duration.
 
+# Demo
+
+![Garmin MARQ Adventurer](images/marq.png)
+
 # TODO
 
 - [x] Show time in zone as a percentage of desired duration.
