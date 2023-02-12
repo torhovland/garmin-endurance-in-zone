@@ -3,7 +3,7 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class TimeInZoneView extends WatchUi.DataField {
+class EnduranceInZoneView extends WatchUi.DataField {
     private const MaxNumberOfZones = 3;
     private const NumberOfReadings = 30;
 

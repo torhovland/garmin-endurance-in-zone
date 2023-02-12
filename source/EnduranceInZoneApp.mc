@@ -5,12 +5,12 @@ import Toybox.WatchUi;
 
 const StateKey = "AppState";
 
-class TimeInZoneApp extends Application.AppBase {
-    private var view as TimeInZoneView;
+class EnduranceInZoneApp extends Application.AppBase {
+    private var view as EnduranceInZoneView;
 
     public function initialize() {
         AppBase.initialize();
-        view = new TimeInZoneView(readSettings());
+        view = new EnduranceInZoneView(readSettings());
     }
 
     public function onStart(state) {
@@ -34,8 +34,8 @@ class TimeInZoneApp extends Application.AppBase {
     }
 }
 
-function getApp() as TimeInZoneApp {
-    return Application.getApp() as TimeInZoneApp;
+function getApp() as EnduranceInZoneApp {
+    return Application.getApp() as EnduranceInZoneApp;
 }
 
 function readSettings() as Array<ZoneSettings> {

@@ -1,4 +1,4 @@
-# garmin-time-in-zone
+# Endurance in Zone
 A Garmin IQ Data Field that can show time within a zone as a percentage of a target duration.
 
 # TODO
