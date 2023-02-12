@@ -1,12 +1,13 @@
 import Toybox.Activity;
 import Toybox.Graphics;
 import Toybox.Lang;
+import Toybox.Math;
 import Toybox.WatchUi;
 
-class EnduranceInZoneView extends WatchUi.DataField {
-    private const MaxNumberOfZones = 3;
-    private const NumberOfReadings = 30;
+const MaxNumberOfZones = 3;
+const NumberOfReadings = 30;
 
+class EnduranceInZoneView extends WatchUi.DataField {
     private var settings as Array<ZoneSettings>;
     private var numberOfZones as Number = MaxNumberOfZones;
     private var readings as Array<Number> = new Array<Number>[NumberOfReadings];
@@ -132,7 +133,7 @@ class EnduranceInZoneView extends WatchUi.DataField {
                 zonePercentage[zone] = ms * 100.0 / settings[zone].duration / 60.0 / 1000.0;
             }
 
-            var zoneGuiHeight = Math.round(height / numberOfZones.toFloat()).toNumber();
+            var zoneGuiHeight = roundCompat(height / numberOfZones.toFloat()).toNumber();
 
             var isFirstZone = zone == 0;
             var isLastZone = isLastZone(zone);
@@ -172,7 +173,7 @@ class EnduranceInZoneView extends WatchUi.DataField {
             }
         }
 
-        return Math.round(sum / NumberOfReadings.toFloat()).toNumber();
+        return roundCompat(sum / NumberOfReadings.toFloat()).toNumber();
     }
 
     private function countNumberOfZones() as Number {
@@ -288,5 +289,13 @@ class EnduranceInZoneView extends WatchUi.DataField {
         }
 
         return false;
+    }
+}
+
+function roundCompat(f as Float) as Number {
+    if (Math has :round) {
+        return Math.round(f).toNumber();
+    } else {
+        return f.toNumber();
     }
 }
