@@ -19,14 +19,14 @@ There is a better option: use _Endurance in Zone!_
 # Demo
 
 <p float="left">
-    <img src="images/forerunner.gif" alt="Garmin Forerunner 945" width="33%">
-    <img src="images/marq.png" alt="Garmin MARQ Adventurer" width="33%">
-    <img src="images/edge130.png" alt="Garmin Edge 130" width="33%">
+    <img src="images/forerunner.gif" alt="Garmin Forerunner 945" width="30%">
+    <img src="images/marq.png" alt="Garmin MARQ Adventurer" width="30%">
+    <img src="images/edge130.png" alt="Garmin Edge 130" width="30%">
 </p>
 
 <p float="left">
-    <img src="images/edge1040.png" alt="Garmin Edge 1040" width="33%">
-    <img src="images/settings.jpg" alt="Settings" width="33%">
+    <img src="images/edge1040.png" alt="Garmin Edge 1040" width="30%">
+    <img src="images/settings.jpg" alt="Settings" width="30%">
 </p>
 
 # TODO
