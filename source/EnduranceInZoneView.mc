@@ -137,7 +137,7 @@ class EnduranceInZoneView extends WatchUi.DataField {
             var isFirstZone = zone == 0;
             var isLastZone = isLastZone(zone);
             fitText(dc, width, zoneGuiHeight, settings[zone], average, zonePercentage[zone], obscurity, isFirstZone, isLastZone);
-            var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2;
+            var verticalOffset = (height / numberOfZones - textDimensions[1]) / 2 + 1;
 
             var progressWidth = zonePercentage[zone] / 100 * width;
             

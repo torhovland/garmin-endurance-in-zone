@@ -16,9 +16,9 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [x] Use light/dark red/green to achieve a progress look.
 - [x] Black/white support.
 - [x] Restore data if app is suspended and resumed.
-- [ ] Rename to Endurance in Zone
+- [x] Rename to Endurance in Zone
 - [x] Use white text colour.
-- [ ] Adjust one pixel down.
+- [x] Adjust one pixel down.
 - [ ] Optimise fitText.
 - [ ] Optimise calculateAverage.
 - [ ] Check deprecated functions on API 4.0.0.
