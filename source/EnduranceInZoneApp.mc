@@ -46,23 +46,39 @@ function readZoneSettings(zone as String) as ZoneSettings {
     var settings = new ZoneSettings();
     
     settings.include = true;
-    settings.type = AppBase.getProperty("type") as Number;
-    settings.duration = AppBase.getProperty("duration" + zone) as Number;
-    settings.power = AppBase.getProperty("power" + zone) as Number;
-    settings.heartRate = AppBase.getProperty("heartRate" + zone) as Number;
+    settings.type = getPropertyCompat("type") as Number;
+    settings.duration = getPropertyCompat("duration" + zone) as Number;
+    settings.power = getPropertyCompat("power" + zone) as Number;
+    settings.heartRate = getPropertyCompat("heartRate" + zone) as Number;
     
     if (!zone.equals("A")) {
-        settings.include = AppBase.getProperty("include" + zone) as Boolean;
+        settings.include = getPropertyCompat("include" + zone) as Boolean;
     }
 
     return settings;
 }
 
 function loadState() as Array<Number> {
-    var state = AppBase.getProperty(StateKey) as Array<Number>;
+    var state = getPropertyCompat(StateKey) as Array<Number>;
     return state;
 }
 
 function saveState(state as Array<Number>) as Void {
-    AppBase.setProperty(StateKey, state);
+    setPropertyCompat(StateKey, state);
+}
+
+function getPropertyCompat(key as String) as PropertyValueType {
+    if (Application has :Properties) {
+        return Properties.getValue(key);
+    } else {
+        return AppBase.getProperty(key);
+    }
+}
+
+function setPropertyCompat(key as String, state as Array<Number>) as Void {
+    if (Application has :Properties) {
+        Properties.setValue(key, state);
+    } else {
+        AppBase.setProperty(key, state);
+    }
 }

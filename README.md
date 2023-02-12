@@ -21,8 +21,7 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [x] Adjust one pixel down.
 - [ ] Optimise fitText.
 - [ ] Optimise calculateAverage.
-- [ ] Check deprecated functions on API 4.0.0.
-- [ ] Test on all devices using simulator, incl. round watches and B/W Edge 130.
+- [ ] Tested on all devices using simulator, incl. oldest and newest, round watches, and black/white.
 - [ ] Unit tests.
 - [ ] Update docs.
 - [ ] Update images.
