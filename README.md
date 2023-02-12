@@ -1,5 +1,20 @@
 # Endurance in Zone
+
 A Garmin IQ Data Field that can show time within a zone as a percentage of a target duration.
+
+# Why?
+
+Have you ever tried to do a structured endurance workout outdoors? It can be frustrating. You're trying to stick to a target power, but traffic, descents, and challenging road surfaces all do their best to derail your workout.
+
+What can you do about it?
+
+- Do your workouts indoors on a trainer. That will make it easy to stick to a structured workout, but it's not fun when your ride is several hours long.
+- Just use average power or weighted average power, and make up for the dips in power by going harder elsewhere. The problem with this is that you're actually doing a harder workout than prescribed.
+- Pause your workout whenever it's not possible to match the power target. I don't know about you, but where I live there are short descents all the time, and constantly pausing my ride seems very unnatural.
+- Don't pause the workout, but use the lap button, and keep track of the total duration of "good" laps in your head. Needless to say, this takes some effort and is error-prone.
+- Don't worry so much about the numbers. Just get the miles in, and do your best to stick to the target power. Sure, this can work, but it's not ideal if you care about the quality of your workouts.
+
+There is a better option: use _Endurance in Zone!_
 
 # Demo
 
