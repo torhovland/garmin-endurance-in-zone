@@ -14,10 +14,20 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [x] Use the largest font that will fit.
 - [x] Support heart rate as well as power.
 - [x] Use light/dark red/green to achieve a progress look.
-- [ ] Test on all devices using simulator.
+- [x] Black/white support.
+- [x] Restore data if app is suspended and resumed.
+- [ ] Rename to Endurance in Zone
+- [x] Use white text colour.
+- [ ] Adjust one pixel down.
+- [ ] Optimise fitText.
+- [ ] Optimise calculateAverage.
+- [ ] Check deprecated functions on API 4.0.0.
+- [ ] Test on all devices using simulator, incl. round watches and B/W Edge 130.
 - [ ] Unit tests.
 - [ ] Update docs.
 - [ ] Update images.
 - [ ] Refactor code.
 - [ ] Colour-blind support (configurable colours).
+- [ ] Test crash report.
 - [ ] Publish first version.
+- [ ] Market.
