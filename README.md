@@ -3,8 +3,10 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 
 # Demo
 
-<img src="images/forerunner.gif" alt="Garmin Forerunner 945" width="45%">
-<img src="images/marq.png" alt="Garmin MARQ Adventurer" width="45%">
+<p float="left">
+    <img src="images/forerunner.gif" alt="Garmin Forerunner 945" width="45%">
+    <img src="images/marq.png" alt="Garmin MARQ Adventurer" width="45%">
+</p>
 
 # TODO
 
