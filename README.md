@@ -2,6 +2,24 @@
 
 A Garmin IQ Data Field that can show time within a zone as a percentage of a target duration.
 
+# Features
+
+- [x] Shows time in zone as a percentage of desired duration.
+- [x] Shows fulfilment of up to three endurance zones.
+- [x] Supports power and heart rate as targets.
+- [x] Configurable target zones as app settings.
+- [x] Uses colour to indicate above/below target, as well as completion ratio.
+- [x] Uses 30 second average for steadier workout levels.
+- [x] Supports all data field sizes, and displays more data where possible.
+- [x] Uses the largest font that will fit.
+- [x] Supports round screens.
+- [x] Works on black/white devices.
+- [x] Supports all Garmin watches and bike computers with IQ app support.
+- [x] Restores data if app is suspended and resumed.
+- [ ] Colour blind support.
+- [ ] Optimised to use as little battery as possible.
+- [ ] Gives some time in zone credit if you are close to your target.
+
 # Why?
 
 Have you ever tried to do a structured endurance workout outdoors? It can be frustrating. You're trying to stick to a target power, but traffic, descents, and challenging road surfaces all do their best to derail your workout.
@@ -99,28 +117,3 @@ I would configure two zones for this, one with 170W as target and the other with
 8. Configure _Time in zone A_ and its power or heart rate target.
 
 9. If you want to use more zones, include zone B and/or C, and configure them the same way.
-
-# TODO
-
-- [x] Show time in zone as a percentage of desired duration.
-- [x] Show green/red background indicating if you are currently reaching the target or not.
-- [x] Configurable power zones as app settings.
-- [x] Show three independent zones concurrently.
-- [x] Reset data when activity ends.
-- [x] Use 30 second average rather than current power.
-- [x] Show 1-3 zones properly, as configured.
-- [x] Display properly on various data field sizes, truncating where needed.
-- [x] Use the largest font that will fit.
-- [x] Support heart rate as well as power.
-- [x] Use light/dark red/green to achieve a progress look.
-- [x] Black/white support.
-- [x] Restore data if app is suspended and resumed.
-- [x] Rename to Endurance in Zone
-- [x] Use white text colour.
-- [x] Adjust one pixel down.
-- [x] Tested on all devices using simulator, incl. oldest and newest, round watches, and black/white.
-- [x] Update docs.
-- [x] Update images.
-- [ ] Test crash report.
-- [ ] Publish first version.
-- [ ] Market.
