@@ -8,6 +8,11 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
     <img src="images/marq.png" alt="Garmin MARQ Adventurer" width="45%">
 </p>
 
+<p float="left">
+    <img src="images/edge130.gif" alt="Garmin Edge 130" width="45%">
+    <img src="images/edge1040.png" alt="Garmin Edge 1040" width="45%">
+</p>
+
 # TODO
 
 - [x] Show time in zone as a percentage of desired duration.
