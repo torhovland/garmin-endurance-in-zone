@@ -207,7 +207,12 @@ class EnduranceInZoneView extends WatchUi.DataField {
         }
 
         if ((obscurity & OBSCURE_TOP) > 0 && (obscurity & OBSCURE_BOTTOM) > 0) {
-            // Data field coveraging full height. Don't reduce.
+            // Data field coveraging full height.
+
+            if ((isFirstZone && !isLastZone) || (!isFirstZone && isLastZone)) {
+                // Reduce first and last zone as long as they're not the only zone.
+                width = (width / 1.5).toNumber();
+            }
         }
         else if ((isFirstZone && (obscurity & OBSCURE_TOP) > 0) || (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0)) {
             // Zone at top or bottom of screen has very limited space.
