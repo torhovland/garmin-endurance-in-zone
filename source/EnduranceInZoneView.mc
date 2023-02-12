@@ -76,7 +76,6 @@ class EnduranceInZoneView extends WatchUi.DataField {
 
             var incrementMs = (time as Number) - (previousTime as Number);
             var average = calculateAverage();
-            System.println("Reading: " + readings[readingIndex] + ". Average: " + average);
 
             for (var zone=0; zone<MaxNumberOfZones; zone++) {   
                 if (!settings[zone].include) {
@@ -207,19 +206,14 @@ class EnduranceInZoneView extends WatchUi.DataField {
             targetText = settings.heartRate + " bpm (" + average + "):";
         }
 
-        System.println("First zone: " + isFirstZone + ". Last zone: " + isLastZone + ". Obscurity is " + obscurity + ". OBSCURE_TOP is " + OBSCURE_TOP + ". OBSCURE_BOTTOM is " + OBSCURE_BOTTOM + ".");
-
         if ((obscurity & OBSCURE_TOP) > 0 && (obscurity & OBSCURE_BOTTOM) > 0) {
             // Data field coveraging full height. Don't reduce.
         }
         else if (isFirstZone && (obscurity & OBSCURE_TOP) > 0) {
-            System.println("First zone.");
             width = (width / 2.5).toNumber();
         } else if (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0) {
-            System.println("Last zone.");
             width = (width / 2.5).toNumber();
         } else if (!isFirstZone && !isLastZone && ((obscurity & OBSCURE_TOP) > 0 || (obscurity & OBSCURE_BOTTOM) > 0)) {
-            System.println("Middle zone.");
             width = (width / 1.5).toNumber();
         }
 
