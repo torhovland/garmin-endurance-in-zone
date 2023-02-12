@@ -211,7 +211,7 @@ class EnduranceInZoneView extends WatchUi.DataField {
 
             if ((isFirstZone && !isLastZone) || (!isFirstZone && isLastZone)) {
                 // Reduce first and last zone as long as they're not the only zone.
-                width = (width / 1.5).toNumber();
+                width = (width / 1.6).toNumber();
             }
         }
         else if ((isFirstZone && (obscurity & OBSCURE_TOP) > 0) || (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0)) {
