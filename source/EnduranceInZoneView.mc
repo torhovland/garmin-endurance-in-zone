@@ -209,12 +209,16 @@ class EnduranceInZoneView extends WatchUi.DataField {
         if ((obscurity & OBSCURE_TOP) > 0 && (obscurity & OBSCURE_BOTTOM) > 0) {
             // Data field coveraging full height. Don't reduce.
         }
-        else if (isFirstZone && (obscurity & OBSCURE_TOP) > 0) {
-            width = (width / 2.5).toNumber();
-        } else if (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0) {
+        else if ((isFirstZone && (obscurity & OBSCURE_TOP) > 0) || (isLastZone && (obscurity & OBSCURE_BOTTOM) > 0)) {
+            // Zone at top or bottom of screen has very limited space.
             width = (width / 2.5).toNumber();
         } else if (!isFirstZone && !isLastZone && ((obscurity & OBSCURE_TOP) > 0 || (obscurity & OBSCURE_BOTTOM) > 0)) {
+            // The middle zone at top or bottom of screen also has limited space.
             width = (width / 1.5).toNumber();
+        }
+        else if ((isLastZone && (obscurity & OBSCURE_TOP) > 0) || (isFirstZone && (obscurity & OBSCURE_BOTTOM) > 0)) {
+            // The third zone from top or bottom of screen has somewhat limited space.
+            width = (width / 1.25).toNumber();
         }
 
         // Try to fit "999m > 999W (123): 100.0%".
