@@ -83,7 +83,8 @@ I would configure two zones for this, one with 170W as target and the other with
 
 # How to install
 
-1. Find the app in the [Garmin Connect IQ Store](https://apps.garmin.com):
+1. Find the app in the Garmin Connect IQ Store:
+   https://apps.garmin.com/en-US/apps/95fc3b69-6c3c-4618-a2de-f68ffca35360
 
 2. Click to download it to your device.
 
