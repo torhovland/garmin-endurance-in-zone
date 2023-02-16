@@ -45,7 +45,7 @@ There is a better option: use _Endurance in Zone!_
 
 <p float="left">
     <img src="images/edge1040.png" alt="Garmin Edge 1040" width="30%">
-    <img src="images/edge820.jpg" alt="Garmin Edge 820" width="30%">
+    <img src="images/edge820-real.jpg" alt="Garmin Edge 820" width="30%">
     <img src="images/settings.jpg" alt="Settings" width="30%">
 </p>
 
