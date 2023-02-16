@@ -17,6 +17,7 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [x] Supports all Garmin watches and bike computers with IQ app support.
 - [x] Restores data if app is suspended and resumed.
 - [ ] Colour blind support.
+- [ ] Supports an upper zone threshold as well.
 - [ ] Optimised to use as little battery as possible.
 - [ ] Gives some time in zone credit if you are close to your target.
 
@@ -44,6 +45,7 @@ There is a better option: use _Endurance in Zone!_
 
 <p float="left">
     <img src="images/edge1040.png" alt="Garmin Edge 1040" width="30%">
+    <img src="images/edge820.jpg" alt="Garmin Edge 820" width="30%">
     <img src="images/settings.jpg" alt="Settings" width="30%">
 </p>
 
