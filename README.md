@@ -18,6 +18,7 @@ A Garmin IQ Data Field that can show time within a zone as a percentage of a tar
 - [x] Restores data if app is suspended and resumed.
 - [ ] Colour blind support.
 - [ ] Supports an upper zone threshold as well.
+- [ ] Supports being used without a duration, hence no percentage complete.
 - [ ] Optimised to use as little battery as possible.
 - [ ] Gives some time in zone credit if you are close to your target.
 
