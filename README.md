@@ -120,3 +120,25 @@ I would configure two zones for this, one with 170W as target and the other with
 8. Configure _Time in zone A_ and its power or heart rate target.
 
 9. If you want to use more zones, include zone B and/or C, and configure them the same way.
+
+# How to upgrade
+
+## With Garmin Express on a PC
+
+Connect your device with Garmin Express and sync. If there are any new versions, you should see it there.
+
+## With Garmin Connect on a phone
+
+1. Make sure your device is on, and open the Garmin Connect app on your phone.
+
+2. Make sure the device shows as connected in Garmin Connect, and touch it to open a menu.
+
+3. Select _Activities & App Management_.
+
+4. Select _Data Fields_.
+
+5. Select _Endurance in Zone_.
+
+6. If there are any new versions you will see an Update button. Press it.
+
+7. If you want to confirm that you are running the latest version, open the data field settings and check the App version at the top. It should match the [newest published version](https://github.com/torhovland/garmin-endurance-in-zone/releases). 
