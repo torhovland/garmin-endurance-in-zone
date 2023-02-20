@@ -36,6 +36,7 @@ class EnduranceInZoneView extends WatchUi.DataField {
 
     public function setState(zoneMs as Array<Number>) as Void {
         if (zoneMs == null) {
+            // TODO: Unit test that triggers on uninitialised data:
             self.zoneMs = new Array<Number>[MaxNumberOfZones];
         } else {
             self.zoneMs = zoneMs;

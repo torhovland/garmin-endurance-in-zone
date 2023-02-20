@@ -3,7 +3,7 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 
-const StateKey = "AppState";
+const StateKeyPrefix = "AppState_";
 
 class EnduranceInZoneApp extends Application.AppBase {
     private var view as EnduranceInZoneView;
@@ -16,13 +16,23 @@ class EnduranceInZoneApp extends Application.AppBase {
     public function onStart(state) {
         if (state != null && state.get(:resume) != null) {
             view.setState(loadState());
+        } else {
+            var info = Activity.getActivityInfo();
+
+            if (info != null) {
+                var time = info.timerTime;
+
+                if (time != null && time > 0) {
+                    // We've been restarted during an activity. Reload saved state.
+                    view.setState(loadState());
+                }
+            }            
         }
     }
 
     public function onStop(state) {
-        if (state != null && state.get(:suspend) != null) {
-            saveState(view.getState());
-        }
+        // Save state in case we're being restarted during an activity.
+        saveState(view.getState());
     }
 
     public function getInitialView() as Array<Views or InputDelegates>? {
@@ -32,10 +42,6 @@ class EnduranceInZoneApp extends Application.AppBase {
     public function onSettingsChanged() as Void {
         view.setSettings(readSettings());
     }
-}
-
-function getApp() as EnduranceInZoneApp {
-    return Application.getApp() as EnduranceInZoneApp;
 }
 
 function readSettings() as Array<ZoneSettings> {
@@ -59,12 +65,28 @@ function readZoneSettings(zone as String) as ZoneSettings {
 }
 
 function loadState() as Array<Number> {
-    var state = getPropertyCompat(StateKey) as Array<Number>;
+    var state = new Array<Number>[MaxNumberOfZones];
+
+    for (var zone=0; zone<MaxNumberOfZones; zone++) {   
+        var key = StateKeyPrefix + "zone_" + zone;
+        var value = getPropertyCompat(key) as Number?;
+
+        if (value) {
+            state[zone] = value;
+        } else {
+            state[zone] = 0;
+        }
+    }
+
     return state;
 }
 
 function saveState(state as Array<Number>) as Void {
-    setPropertyCompat(StateKey, state);
+    for (var zone=0; zone<MaxNumberOfZones; zone++) {   
+        var key = StateKeyPrefix + "zone_" + zone;
+        var value = state[zone];
+        setPropertyCompat(key, value);
+    }
 }
 
 function getPropertyCompat(key as String) as PropertyValueType {
@@ -75,10 +97,24 @@ function getPropertyCompat(key as String) as PropertyValueType {
     }
 }
 
-function setPropertyCompat(key as String, state as Array<Number>) as Void {
+function setPropertyCompat(key as String, state as PropertyValueType) as Void {
     if (Application has :Properties) {
         Properties.setValue(key, state);
     } else {
         AppBase.setProperty(key, state);
     }
 }
+
+// function log(s as String) as Void {
+//     var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
+//     var logString = Lang.format(
+//         "$1$:$2$:$3$: $4$",
+//         [
+//             now.hour,
+//             now.min,
+//             now.sec,
+//             s
+//         ]
+//     );
+//     System.println(logString);
+// }
